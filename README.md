@@ -10,20 +10,19 @@ This repository contains both the public agency web platform and the private fou
 
 ```
 Websmagic/
-├── client/                     # Frontend Application (React + Vite + Tailwind CSS)
+├── client/                     # Frontend Application (React 18 + Vite + Tailwind CSS)
 │   ├── public/                 # Static public assets
 │   ├── src/
 │   │   ├── assets/             # Images, icons, static resources
 │   │   ├── components/         # Reusable UI components
-│   │   │   ├── common/         # Navbar, Footer, Buttons, Cards
-│   │   │   └── feedback/       # Alerts, Loaders, Empty States
-│   │   ├── layouts/            # Page layouts (MainLayout, DashboardLayout)
-│   │   ├── pages/              # Route views (Home, About, Services, Projects, Founders, Contact, Dashboard)
+│   │   │   └── common/         # Navbar, Footer, HeroArtwork, ProjectModal, SectionHeading, Badge, DynamicIcon
+│   │   ├── layouts/            # Page layouts (MainLayout)
+│   │   ├── pages/              # Route views (Home, About, Services, Projects, Founders, Contact, Dashboard, NotFound)
 │   │   ├── routes/             # AppRoutes configuration
-│   │   ├── hooks/              # Custom React hooks
-│   │   ├── services/           # API integration clients
+│   │   ├── hooks/              # Custom React hooks (useDocumentTitle)
+│   │   ├── services/           # API integration clients (api.js, inquiryService.js)
 │   │   ├── context/            # Global state and contexts
-│   │   ├── utils/              # Helper functions and formatters
+│   │   ├── utils/              # Helper functions, agencyData.js
 │   │   ├── styles/             # Additional CSS/styling rules
 │   │   ├── App.jsx             # Root component
 │   │   ├── index.css           # Tailwind base, components, utilities
@@ -33,8 +32,20 @@ Websmagic/
 │   ├── tailwind.config.js      # Custom theme colors (navy, brand blue)
 │   ├── postcss.config.js       # PostCSS config
 │   ├── vite.config.js          # Vite config with '@' path alias
-│   └── .env.example            # Client environment variables
-├── server/                     # Backend Application (Phase 3)
+│   └── .env.example            # Client environment variables template
+├── server/                     # Backend Application (Node.js + Express + Mongoose)
+│   ├── src/
+│   │   ├── config/             # Database connection (db.js)
+│   │   ├── controllers/        # Request controllers (inquiryController.js)
+│   │   ├── middleware/         # Validation, error handling, notFound (validateInquiry.js, errorHandler.js, notFound.js)
+│   │   ├── models/             # Mongoose Schemas (Inquiry.js)
+│   │   ├── routes/             # Express Routers (inquiryRoutes.js)
+│   │   ├── utils/              # Helpers (apiResponse.js)
+│   │   ├── app.js              # Express app setup (Helmet, CORS, Rate Limit, Parsers)
+│   │   └── server.js           # Server entry point & graceful shutdown
+│   ├── test-api.js             # Unit & middleware test suite
+│   ├── package.json            # Backend dependencies & scripts
+│   └── .env.example            # Server environment variables template
 ├── .env.example                # Root environment template
 ├── .gitignore                  # Git ignore rules
 ├── package.json                # Root workspace scripts
@@ -45,10 +56,10 @@ Websmagic/
 
 ## Technology Stack
 
-- **Frontend**: React 18, Vite, JavaScript (JSX), React Router DOM v6, Tailwind CSS, Lucide Icons, Recharts.
-- **Backend**: Node.js, Express.js (Phase 3).
-- **Database**: MongoDB, Mongoose (Phase 3).
-- **Authentication**: Secure HTTP-only cookie-based sessions (Phase 5).
+- **Frontend**: React 18, Vite, JavaScript (JSX), React Router DOM v6, Tailwind CSS, Lucide Icons.
+- **Backend**: Node.js, Express.js (REST API architecture).
+- **Database**: MongoDB Atlas, Mongoose ODM.
+- **Security**: Helmet, CORS origin restriction, Express Rate Limit, 10KB body size limit, input sanitization.
 
 ---
 
@@ -57,36 +68,56 @@ Websmagic/
 ### 1. Prerequisites
 - Node.js (v18+ recommended)
 - npm or pnpm
+- MongoDB Atlas database cluster or local MongoDB instance
 
 ### 2. Installation
-Install client dependencies:
+Install dependencies for both frontend and backend:
 ```bash
-cd client
-npm install
+# Install client dependencies
+npm --prefix client install
+
+# Install server dependencies
+npm --prefix server install
 ```
 
 ### 3. Environment Setup
-Copy `.env.example` in `client/`:
+Configure environment variables:
 ```bash
+# Frontend environment
 cp client/.env.example client/.env
+
+# Backend environment
+cp server/.env.example server/.env
 ```
 
-### 4. Development Server
-Start the frontend development server:
-```bash
-npm run dev
-# or from client directory:
-cd client && npm run dev
+Edit `server/.env` with your MongoDB connection string:
+```env
+PORT=5000
+NODE_ENV=development
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.abcde.mongodb.net/govind_web_solutions?retryWrites=true&w=majority
+CLIENT_URL=http://localhost:5173
 ```
 
-The application will run at `http://localhost:5173`.
+### 4. Running the Development Servers
+In separate terminal sessions or using root scripts:
 
-### 5. Production Build
-Build for production:
 ```bash
-npm run build
-# or from client directory:
-cd client && npm run build
+# Start Backend API Server (http://localhost:5000)
+npm run server:dev
+
+# Start Frontend Development Server (http://localhost:5173)
+npm run client:dev
+```
+
+### 5. Running the Backend Test Suite
+```bash
+node server/test-api.js
+```
+
+### 6. Production Build
+Verify the production build of the frontend:
+```bash
+npm run client:build
 ```
 
 ---
@@ -94,9 +125,8 @@ cd client && npm run build
 ## Phased Development Roadmap
 
 - [x] **Phase 1: Project Foundation** — React + Vite setup, Tailwind CSS configuration, folder structure, placeholder homepage, scripts, build verification.
-- [ ] **Phase 2: Public Website UI** — Home, About, Services, Projects, Founders, Contact pages.
-- [ ] **Phase 3: Backend and Contact Inquiries** — Express API, MongoDB storage, validation, inquiry submission.
+- [x] **Phase 2: Public Website UI** — Home, About, Services, Projects with filters & case study modal, Founders profiles, responsive Contact UI.
+- [x] **Phase 3: Backend and Contact Inquiries** — Express REST API, Mongoose Inquiry model, server-side validation & sanitization, rate limiting, and real frontend contact form integration.
 - [ ] **Phase 4: Analytics Dashboard** — Visitor tracking, metrics charts, lead management UI.
 - [ ] **Phase 5: Founder Authentication and Security** — Two founder accounts, session management, route protection.
 - [ ] **Phase 6: Testing and Deployment** — QA, security verification, Vercel & Render deployment.
-

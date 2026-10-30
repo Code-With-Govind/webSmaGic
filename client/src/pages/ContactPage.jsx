@@ -8,13 +8,12 @@ import {
   Send,
   CheckCircle2,
   AlertCircle,
-  HelpCircle,
   Sparkles,
   ArrowRight,
   RefreshCw,
 } from 'lucide-react';
 import useDocumentTitle from '../hooks/useDocumentTitle';
-import SectionHeading from '../components/common/SectionHeading';
+import inquiryService from '../services/inquiryService';
 import { AGENCY_SERVICES } from '../utils/agencyData';
 
 export default function ContactPage() {
@@ -33,13 +32,13 @@ export default function ContactPage() {
     contactMethod: 'Email',
   });
 
-  // Validation Errors State
+  // Validation & Server States
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-
-  // UI Submission States
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isDemoSubmitted, setIsDemoSubmitted] = useState(false);
+  const [serverError, setServerError] = useState(null);
+  const [isSubmittedSuccessfully, setIsSubmittedSuccessfully] = useState(false);
+  const [submittedInquiryId, setSubmittedInquiryId] = useState(null);
 
   // Pre-populate service if passed via query params
   useEffect(() => {
@@ -49,7 +48,7 @@ export default function ContactPage() {
     }
   }, [searchParams]);
 
-  // Validation Logic
+  // Client-Side Validation Logic
   const validate = () => {
     const newErrors = {};
 
@@ -81,6 +80,7 @@ export default function ContactPage() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setServerError(null);
 
     // Real-time validation if field was touched
     if (touched[name]) {
@@ -96,8 +96,10 @@ export default function ContactPage() {
     setErrors(validationErrors);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setServerError(null);
+
     const validationErrors = validate();
     setErrors(validationErrors);
     setTouched({
@@ -109,28 +111,57 @@ export default function ContactPage() {
 
     if (Object.keys(validationErrors).length === 0) {
       setIsSubmitting(true);
-      // Simulate client-side UI processing (Phase 2 frontend demo only)
-      setTimeout(() => {
+      try {
+        const payload = {
+          fullName: formData.fullName.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          company: formData.companyName.trim(),
+          service: formData.service,
+          budget: formData.budget,
+          projectDescription: formData.description.trim(),
+          preferredContactMethod: formData.contactMethod,
+        };
+
+        const result = await inquiryService.submitInquiry(payload);
+
+        // Success: record ID, reset form state
+        setSubmittedInquiryId(result.data?.id || null);
+        setIsSubmittedSuccessfully(true);
+        setFormData({
+          fullName: '',
+          email: '',
+          phone: '',
+          companyName: '',
+          service: '',
+          budget: '',
+          description: '',
+          contactMethod: 'Email',
+        });
+        setErrors({});
+        setTouched({});
+      } catch (err) {
+        // Preserve entered values, report clean error
+        if (err.errors && Array.isArray(err.errors)) {
+          const fieldErrors = {};
+          err.errors.forEach((e) => {
+            if (e.field) fieldErrors[e.field] = e.message;
+          });
+          setErrors((prev) => ({ ...prev, ...fieldErrors }));
+        }
+        setServerError(
+          err.message || 'We could not submit your inquiry at this moment. Please check your information or try again shortly.'
+        );
+      } finally {
         setIsSubmitting(false);
-        setIsDemoSubmitted(true);
-      }, 1200);
+      }
     }
   };
 
   const handleReset = () => {
-    setFormData({
-      fullName: '',
-      email: '',
-      phone: '',
-      companyName: '',
-      service: '',
-      budget: '',
-      description: '',
-      contactMethod: 'Email',
-    });
-    setErrors({});
-    setTouched({});
-    setIsDemoSubmitted(false);
+    setIsSubmittedSuccessfully(false);
+    setSubmittedInquiryId(null);
+    setServerError(null);
   };
 
   const budgetRanges = [
@@ -162,43 +193,40 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Column: Interactive Contact Form */}
           <div className="lg:col-span-8 bg-navy-900/90 border border-navy-800 rounded-3xl p-8 sm:p-10 shadow-2xl">
-            {isDemoSubmitted ? (
-              /* Phase 2 Frontend Demo State Confirmation */
+            {isSubmittedSuccessfully ? (
+              /* Verified Database Submission Success State */
               <div className="text-center py-10 space-y-6">
                 <div className="w-16 h-16 rounded-3xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/10">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <div className="space-y-2 max-w-md mx-auto">
-                  <span className="text-xs uppercase tracking-wider font-bold text-brand-accent">
-                    Frontend Verification Successful
+                <div className="space-y-3 max-w-md mx-auto">
+                  <span className="text-xs uppercase tracking-wider font-bold text-emerald-400">
+                    Inquiry Received Successfully
                   </span>
                   <h3 className="text-2xl font-bold text-white">
-                    Form Validation & UI Preview Complete
+                    Thank You for Contacting Govind Web Solutions
                   </h3>
-                  <div className="p-4 rounded-xl bg-navy-850 border border-navy-750 text-left text-xs text-slate-300 space-y-2 mt-4">
-                    <p className="font-semibold text-white">
-                      Notice: Phase 2 Scope Boundary
+                  <p className="text-sm text-slate-300 leading-relaxed">
+                    Your inquiry has been safely saved in our database. Our technical founder, Govind Rathod, will review your project parameters and respond within 24 business hours.
+                  </p>
+                  {submittedInquiryId && (
+                    <p className="text-xs font-mono text-slate-500">
+                      Reference ID: {submittedInquiryId}
                     </p>
-                    <p>
-                      All client-side validation rules (full name, email syntax, required fields, and state persistence) executed successfully.
-                    </p>
-                    <p className="text-slate-400 italic">
-                      In Phase 3, this form will connect directly to the Express backend and MongoDB database for real-time lead capture and founder notification dispatch. No data has been saved or emailed in this UI phase.
-                    </p>
-                  </div>
+                  )}
                 </div>
 
-                <div className="pt-4 flex items-center justify-center gap-4">
+                <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
                   <button
                     onClick={handleReset}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-primary hover:bg-brand-secondary text-white text-sm font-semibold transition-colors"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-primary hover:bg-brand-secondary text-white text-sm font-semibold transition-colors"
                   >
                     <RefreshCw className="w-4 h-4" />
-                    <span>Reset & Test Form Again</span>
+                    <span>Submit Another Inquiry</span>
                   </button>
                   <Link
                     to="/"
-                    className="px-6 py-3 rounded-xl bg-navy-850 hover:bg-navy-800 text-slate-300 text-sm font-semibold border border-navy-700 transition-colors"
+                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-navy-850 hover:bg-navy-800 text-slate-300 text-sm font-semibold border border-navy-700 transition-colors text-center"
                   >
                     Return to Homepage
                   </Link>
@@ -214,6 +242,17 @@ export default function ContactPage() {
                   </p>
                 </div>
 
+                {/* Server Error Alert Banner */}
+                {serverError && (
+                  <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-start gap-3">
+                    <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-semibold block">Submission Error</span>
+                      <span>{serverError}</span>
+                    </div>
+                  </div>
+                )}
+
                 {/* Name & Email Row */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {/* Full Name */}
@@ -228,8 +267,9 @@ export default function ContactPage() {
                       value={formData.fullName}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      disabled={isSubmitting}
                       placeholder="e.g. Alex Morgan"
-                      className={`w-full px-4 py-3 rounded-xl bg-navy-950 text-white placeholder-slate-500 border transition-colors focus:outline-none focus:ring-2 ${
+                      className={`w-full px-4 py-3 rounded-xl bg-navy-950 text-white placeholder-slate-500 border transition-colors focus:outline-none focus:ring-2 disabled:opacity-60 ${
                         errors.fullName && touched.fullName
                           ? 'border-red-500 focus:ring-red-500/30'
                           : 'border-navy-750 focus:border-brand-primary focus:ring-brand-primary/20'
@@ -256,8 +296,9 @@ export default function ContactPage() {
                       value={formData.email}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      disabled={isSubmitting}
                       placeholder="alex@company.com"
-                      className={`w-full px-4 py-3 rounded-xl bg-navy-950 text-white placeholder-slate-500 border transition-colors focus:outline-none focus:ring-2 ${
+                      className={`w-full px-4 py-3 rounded-xl bg-navy-950 text-white placeholder-slate-500 border transition-colors focus:outline-none focus:ring-2 disabled:opacity-60 ${
                         errors.email && touched.email
                           ? 'border-red-500 focus:ring-red-500/30'
                           : 'border-navy-750 focus:border-brand-primary focus:ring-brand-primary/20'
@@ -286,8 +327,9 @@ export default function ContactPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
+                      disabled={isSubmitting}
                       placeholder="+1 (555) 000-0000"
-                      className="w-full px-4 py-3 rounded-xl bg-navy-950 text-white placeholder-slate-500 border border-navy-750 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-navy-950 text-white placeholder-slate-500 border border-navy-750 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 focus:outline-none transition-colors disabled:opacity-60"
                     />
                   </div>
 
@@ -302,8 +344,9 @@ export default function ContactPage() {
                       name="companyName"
                       value={formData.companyName}
                       onChange={handleChange}
+                      disabled={isSubmitting}
                       placeholder="e.g. Acme Corporation"
-                      className="w-full px-4 py-3 rounded-xl bg-navy-950 text-white placeholder-slate-500 border border-navy-750 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-navy-950 text-white placeholder-slate-500 border border-navy-750 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 focus:outline-none transition-colors disabled:opacity-60"
                     />
                   </div>
                 </div>
@@ -321,7 +364,8 @@ export default function ContactPage() {
                       value={formData.service}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      className={`w-full px-4 py-3 rounded-xl bg-navy-950 text-white border transition-colors focus:outline-none focus:ring-2 ${
+                      disabled={isSubmitting}
+                      className={`w-full px-4 py-3 rounded-xl bg-navy-950 text-white border transition-colors focus:outline-none focus:ring-2 disabled:opacity-60 ${
                         errors.service && touched.service
                           ? 'border-red-500 focus:ring-red-500/30'
                           : 'border-navy-750 focus:border-brand-primary focus:ring-brand-primary/20'
@@ -356,7 +400,8 @@ export default function ContactPage() {
                       name="budget"
                       value={formData.budget}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-navy-950 text-white border border-navy-750 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 focus:outline-none transition-colors"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 rounded-xl bg-navy-950 text-white border border-navy-750 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 focus:outline-none transition-colors disabled:opacity-60"
                     >
                       <option value="">Select budget range...</option>
                       {budgetRanges.map((range) => (
@@ -380,8 +425,9 @@ export default function ContactPage() {
                     value={formData.description}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled={isSubmitting}
                     placeholder="Describe your project goals, key features, target timeline, or any specific technologies you require..."
-                    className={`w-full px-4 py-3 rounded-xl bg-navy-950 text-white placeholder-slate-500 border transition-colors focus:outline-none focus:ring-2 ${
+                    className={`w-full px-4 py-3 rounded-xl bg-navy-950 text-white placeholder-slate-500 border transition-colors focus:outline-none focus:ring-2 disabled:opacity-60 ${
                       errors.description && touched.description
                         ? 'border-red-500 focus:ring-red-500/30'
                         : 'border-navy-750 focus:border-brand-primary focus:ring-brand-primary/20'
@@ -417,6 +463,7 @@ export default function ContactPage() {
                           value={method}
                           checked={formData.contactMethod === method}
                           onChange={handleChange}
+                          disabled={isSubmitting}
                           className="sr-only"
                         />
                         <span className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
@@ -437,12 +484,12 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-brand-primary hover:bg-brand-secondary text-white font-semibold text-base shadow-lg shadow-brand-primary/25 hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-brand-primary hover:bg-brand-secondary text-white font-semibold text-base shadow-lg shadow-brand-primary/25 hover:shadow-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>
                         <RefreshCw className="w-5 h-5 animate-spin" />
-                        <span>Validating & Simulating Submission...</span>
+                        <span>Transmitting Inquiry to Server...</span>
                       </>
                     ) : (
                       <>
@@ -451,8 +498,8 @@ export default function ContactPage() {
                       </>
                     )}
                   </button>
-                  <p className="text-[11px] text-slate-500 text-center mt-3">
-                    Phase 2 UI Mode — Complete validation is enabled. Persistent database submission activates in Phase 3.
+                  <p className="text-[11px] text-slate-400 text-center mt-3">
+                    Your inquiry is protected by server-side validation and encrypted SSL transmission.
                   </p>
                 </div>
               </form>
