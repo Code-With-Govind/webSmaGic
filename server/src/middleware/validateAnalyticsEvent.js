@@ -93,3 +93,4 @@ export const validateAnalyticsEvent = (req, res, next) => {
 };
 
 export default validateAnalyticsEvent;
+

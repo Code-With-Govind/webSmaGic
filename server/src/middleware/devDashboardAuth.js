@@ -22,3 +22,4 @@ export const devDashboardAuth = (req, res, next) => {
 };
 
 export default devDashboardAuth;
+

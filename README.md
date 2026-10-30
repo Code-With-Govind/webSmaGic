@@ -17,34 +17,34 @@ Websmagic/
 │   │   ├── components/         # Reusable UI components
 │   │   │   └── common/         # Navbar, Footer, HeroArtwork, ProjectModal, SectionHeading, Badge, DynamicIcon
 │   │   ├── layouts/            # Page layouts (MainLayout with automatic page_view tracking)
-│   │   ├── pages/              # Route views (Home, About, Services, Projects, Founders, Contact, Dashboard, NotFound)
-│   │   ├── routes/             # AppRoutes configuration
+│   │   ├── pages/              # Route views (Home, About, Services, Projects, Founders, Contact, Login, Dashboard, NotFound)
+│   │   ├── routes/             # AppRoutes, ProtectedRoute (intercepts unauthenticated dashboard access)
 │   │   ├── hooks/              # Custom React hooks (useDocumentTitle)
-│   │   ├── services/           # API integration clients (api.js, inquiryService.js, dashboardService.js)
-│   │   ├── context/            # Global state and contexts
+│   │   ├── services/           # API integration clients (api.js, inquiryService.js, dashboardService.js, authService.js)
+│   │   ├── context/            # AuthContext (centralized session state, login, logout, checkAuth)
 │   │   ├── utils/              # Analytics tracker (analytics.js), agencyData.js, helpers.js
 │   │   ├── styles/             # Additional CSS/styling rules
-│   │   ├── App.jsx             # Root component
+│   │   ├── App.jsx             # Root component with AuthProvider
 │   │   ├── index.css           # Tailwind base, components, utilities
 │   │   └── main.jsx            # Vite DOM entry point
 │   ├── index.html              # HTML shell with Inter typography & metadata
 │   ├── package.json            # Client dependencies & scripts
 │   ├── tailwind.config.js      # Custom theme colors (navy, brand blue)
 │   ├── postcss.config.js       # PostCSS config
-│   ├── vite.config.js          # Vite config with '@' path alias
+│   ├── vite.config.js          # Vite config with manual chunking & '@' path alias
 │   └── .env.example            # Client environment variables template
 ├── server/                     # Backend Application (Node.js + Express + Mongoose)
 │   ├── src/
 │   │   ├── config/             # Database connection (db.js)
-│   │   ├── controllers/        # Controllers (inquiryController.js, analyticsController.js)
-│   │   ├── middleware/         # Middleware (validateInquiry, validateAnalyticsEvent, devDashboardAuth, errorHandler, notFound)
-│   │   ├── models/             # Mongoose Schemas (Inquiry.js, AnalyticsEvent.js)
-│   │   ├── routes/             # Express Routers (inquiryRoutes.js, analyticsRoutes.js)
-│   │   ├── services/           # Analytics aggregations & metrics (analyticsService.js)
-│   │   ├── utils/              # Helpers (apiResponse.js)
-│   │   ├── app.js              # Express app setup (Helmet, CORS, Rate Limit, Parsers)
-│   │   └── server.js           # Server entry point & graceful shutdown
-│   ├── test-api.js             # Comprehensive backend test suite (Phase 3 + Phase 4)
+│   │   ├── controllers/        # Controllers (authController, inquiryController, analyticsController)
+│   │   ├── middleware/         # Middleware (requireFounderAuth, validateInquiry, validateAnalyticsEvent, errorHandler, notFound)
+│   │   ├── models/             # Mongoose Schemas (Founder, Inquiry, AnalyticsEvent)
+│   │   ├── routes/             # Express Routers (authRoutes, inquiryRoutes, analyticsRoutes)
+│   │   ├── services/           # Services (founderProvisioningService, analyticsService)
+│   │   ├── utils/              # Helpers (tokenUtils, apiResponse)
+│   │   ├── app.js              # Express app setup (Helmet, CORS, CookieParser, Rate Limit, Parsers)
+│   │   └── server.js           # Server entry point, founder seeding, & graceful shutdown
+│   ├── test-api.js             # Comprehensive backend test suite (Phase 3 + Phase 4 + Phase 5)
 │   ├── package.json            # Backend dependencies & scripts
 │   └── .env.example            # Server environment variables template
 ├── .env.example                # Root environment template
@@ -57,11 +57,12 @@ Websmagic/
 
 ## Technology Stack
 
-- **Frontend**: React 18, Vite, JavaScript (JSX), React Router DOM v6, Tailwind CSS, Lucide Icons, Recharts.
+- **Frontend**: React 18, Vite 6, JavaScript (JSX), React Router DOM v6, Tailwind CSS v3, Lucide Icons, Recharts.
 - **Backend**: Node.js, Express.js (REST API architecture).
 - **Database**: MongoDB Atlas, Mongoose ODM.
+- **Authentication**: Secure HTTP-only cookie-based sessions, cryptographically signed JSON Web Tokens (JWT), bcrypt password hashing (12 salt rounds), strict login rate limiting (5 attempts per 15 minutes per IP).
 - **Analytics**: Privacy-conscious first-party telemetry tracking `page_view`, `service_cta_click`, `inquiry_attempt`, and `inquiry_success` without raw IP storage or invasive fingerprinting.
-- **Security**: Helmet security headers, CORS origin restriction, rate limiting, request size limits, XSS input sanitization, production dashboard lockdown guard.
+- **Security**: Helmet HTTP headers, CORS origin restriction, rate limiting, request size limits, XSS input sanitization, protected founder routes, zero public registration.
 
 ---
 
@@ -92,12 +93,23 @@ cp client/.env.example client/.env
 cp server/.env.example server/.env
 ```
 
-Edit `server/.env` with your MongoDB connection string:
+Edit `server/.env` with your MongoDB connection string and founder credentials:
 ```env
 PORT=5000
 NODE_ENV=development
 MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.abcde.mongodb.net/govind_web_solutions?retryWrites=true&w=majority
 CLIENT_URL=http://localhost:5173
+SESSION_SECRET=change-this-to-a-super-secure-random-32-character-secret
+
+# Founder 1 Provisioning Credentials
+FOUNDER_1_NAME=Govind Rathod
+FOUNDER_1_EMAIL=govind@govindwebsolutions.com
+FOUNDER_1_PASSWORD=FounderGovind#2026
+
+# Founder 2 Provisioning Credentials
+FOUNDER_2_NAME=Co-founder (Business Development)
+FOUNDER_2_EMAIL=partner@govindwebsolutions.com
+FOUNDER_2_PASSWORD=FounderPartner#2026
 ```
 
 ### 4. Running the Development Servers
@@ -111,7 +123,7 @@ npm run server:dev
 npm run client:dev
 ```
 
-### 5. Running the Backend Test Suite
+### 5. Running the Automated Test Suite
 ```bash
 node server/test-api.js
 ```
@@ -130,5 +142,5 @@ npm run client:build
 - [x] **Phase 2: Public Website UI** — Home, About, Services, Projects with filters & case study modal, Founders profiles, responsive Contact UI.
 - [x] **Phase 3: Backend and Contact Inquiries** — Express REST API, Mongoose Inquiry model, server-side validation & sanitization, rate limiting, and real frontend contact form integration.
 - [x] **Phase 4: Analytics Dashboard** — First-party telemetry collection, MongoDB aggregation pipelines, date filtering (7d/30d/90d), Recharts visualizations, and private founder dashboard.
-- [ ] **Phase 5: Founder Authentication and Security** — Two founder accounts, session management, route protection.
+- [x] **Phase 5: Founder Authentication and Security** — Two founder accounts, secure HTTP-only cookies, session management, protected routes, and login experience.
 - [ ] **Phase 6: Testing and Deployment** — QA, security verification, Vercel & Render deployment.

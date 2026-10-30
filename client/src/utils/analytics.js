@@ -157,3 +157,4 @@ export const trackInquiryAttempt = () => {
 export const trackInquirySuccess = () => {
   trackEvent('inquiry_success');
 };
+

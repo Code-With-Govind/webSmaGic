@@ -364,3 +364,4 @@ export const getInquiryAnalytics = async (startDate, endDate) => {
     byContactMethod,
   };
 };
+

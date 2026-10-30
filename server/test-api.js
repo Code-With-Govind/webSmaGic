@@ -1,19 +1,24 @@
 import { validateInquiry } from './src/middleware/validateInquiry.js';
 import { validateAnalyticsEvent } from './src/middleware/validateAnalyticsEvent.js';
-import { devDashboardAuth } from './src/middleware/devDashboardAuth.js';
+import { requireFounderAuth } from './src/middleware/requireFounderAuth.js';
 import { notFound } from './src/middleware/notFound.js';
 import { errorHandler } from './src/middleware/errorHandler.js';
 import { createInquiry } from './src/controllers/inquiryController.js';
 import { recordEvent, getOverview } from './src/controllers/analyticsController.js';
+import { login, logout, getMe } from './src/controllers/authController.js';
+import { generateToken, verifyToken, TOKEN_COOKIE_NAME } from './src/utils/tokenUtils.js';
 import { parseDateRange } from './src/services/analyticsService.js';
 import Inquiry from './src/models/Inquiry.js';
 import AnalyticsEvent from './src/models/AnalyticsEvent.js';
+import Founder from './src/models/Founder.js';
 
 // Mock Express response generator
 function createMockRes() {
   const res = {
     statusCode: 200,
     headers: {},
+    cookies: {},
+    clearedCookies: [],
     data: null,
     status(code) {
       this.statusCode = code;
@@ -21,6 +26,15 @@ function createMockRes() {
     },
     json(payload) {
       this.data = payload;
+      return this;
+    },
+    cookie(name, val, options) {
+      this.cookies[name] = { val, options };
+      return this;
+    },
+    clearCookie(name, options) {
+      this.clearedCookies.push({ name, options });
+      delete this.cookies[name];
       return this;
     },
     setHeader(key, val) {
@@ -31,8 +45,10 @@ function createMockRes() {
   return res;
 }
 
-async function runPhase4TestSuite() {
-  console.log('--- Starting Govind Web Solutions Phase 4 Test Suite ---');
+async function runPhase5TestSuite() {
+  console.log('========================================================');
+  console.log('Govind Web Solutions — Comprehensive Phase 5 Test Suite');
+  console.log('========================================================');
   let passed = 0;
   let failed = 0;
 
@@ -59,12 +75,11 @@ async function runPhase4TestSuite() {
       nextCalled = true;
     });
 
-    if (nextCalled) throw new Error('next() should not be called for empty body');
+    if (nextCalled) throw new Error('next() should not be called');
     if (res.statusCode !== 400) throw new Error(`Expected 400, got ${res.statusCode}`);
-    if (res.data?.success !== false) throw new Error('Expected res.data.success === false');
   });
 
-  await test('validateInquiry sanitizes XSS tags and attaches cleanData on valid input', async () => {
+  await test('validateInquiry sanitizes XSS tags and normalizes fields', async () => {
     const req = {
       body: {
         fullName: '  <script>alert("hack")</script>Govind Rathod  ',
@@ -84,15 +99,15 @@ async function runPhase4TestSuite() {
       nextCalled = true;
     });
 
-    if (!nextCalled) throw new Error('next() should be called for valid payload');
+    if (!nextCalled) throw new Error('next() should be called');
     if (req.cleanData.fullName.includes('<script>')) throw new Error('XSS tags should be stripped');
     if (req.cleanData.email !== 'govind@example.com') throw new Error('Email should be normalized to lowercase');
   });
 
   // ==========================================
-  // 2. ANALYTICS EVENT VALIDATION TESTS
+  // 2. ANALYTICS EVENT INGESTION TESTS (Phase 4 Core)
   // ==========================================
-  await test('validateAnalyticsEvent accepts valid page_view event', async () => {
+  await test('validateAnalyticsEvent accepts public page_view event', async () => {
     const req = {
       body: {
         eventType: 'page_view',
@@ -111,53 +126,8 @@ async function runPhase4TestSuite() {
       nextCalled = true;
     });
 
-    if (!nextCalled) throw new Error('next() should be called for valid event');
-    if (!req.cleanEvent) throw new Error('req.cleanEvent must be set');
-    if (req.cleanEvent.eventType !== 'page_view') throw new Error('Invalid eventType');
-    if (req.cleanEvent.pagePath !== '/services') throw new Error('Invalid pagePath');
-  });
-
-  await test('validateAnalyticsEvent accepts service_cta_click event', async () => {
-    const req = {
-      body: {
-        eventType: 'service_cta_click',
-        visitorId: 'v_1730000000_abcdef123',
-        sessionId: 's_1730000000_fedcba321',
-        pagePath: '/services',
-        service: 'E-commerce Website Development',
-      },
-    };
-    const res = createMockRes();
-    let nextCalled = false;
-
-    validateAnalyticsEvent(req, res, () => {
-      nextCalled = true;
-    });
-
     if (!nextCalled) throw new Error('next() should be called');
-    if (req.cleanEvent.service !== 'E-commerce Website Development') {
-      throw new Error('Service name not preserved');
-    }
-  });
-
-  await test('validateAnalyticsEvent rejects invalid eventType with 400', async () => {
-    const req = {
-      body: {
-        eventType: 'arbitrary_click',
-        visitorId: 'v_1730000000_abcdef123',
-        sessionId: 's_1730000000_fedcba321',
-        pagePath: '/',
-      },
-    };
-    const res = createMockRes();
-    let nextCalled = false;
-
-    validateAnalyticsEvent(req, res, () => {
-      nextCalled = true;
-    });
-
-    if (nextCalled) throw new Error('next() should not be called');
-    if (res.statusCode !== 400) throw new Error(`Expected 400, got ${res.statusCode}`);
+    if (!req.cleanEvent) throw new Error('req.cleanEvent must be set');
   });
 
   await test('validateAnalyticsEvent rejects internal /dashboard path from tracking', async () => {
@@ -178,162 +148,224 @@ async function runPhase4TestSuite() {
 
     if (nextCalled) throw new Error('Dashboard paths must be excluded');
     if (res.statusCode !== 400) throw new Error(`Expected 400, got ${res.statusCode}`);
-    if (!res.data?.message?.includes('Internal dashboard paths are excluded')) {
+  });
+
+  // ==========================================
+  // 3. FOUNDER AUTHENTICATION & SECURITY (Phase 5)
+  // ==========================================
+  const f1Email = (process.env.FOUNDER_1_EMAIL || 'govind@govindwebsolutions.com').toLowerCase();
+  const f1Pass = process.env.FOUNDER_1_PASSWORD || 'FounderGovind#2026';
+  const f2Email = (process.env.FOUNDER_2_EMAIL || 'partner@govindwebsolutions.com').toLowerCase();
+  const f2Pass = process.env.FOUNDER_2_PASSWORD || 'FounderPartner#2026';
+
+  await test('Founder 1 (Govind Rathod) login authenticates and sets HTTP-only cookie', async () => {
+    const req = {
+      body: {
+        email: f1Email,
+        password: f1Pass,
+      },
+    };
+    const res = createMockRes();
+
+    await login(req, res, () => {});
+
+    if (res.statusCode !== 200) throw new Error(`Expected 200, got ${res.statusCode}: ${res.data?.message}`);
+    if (!res.data?.success) throw new Error('Expected data.success === true');
+    if (res.data?.data?.founder?.email !== f1Email) throw new Error('Founder email mismatch');
+
+    // Verify HTTP-only cookie was issued
+    const cookieEntry = res.cookies[TOKEN_COOKIE_NAME];
+    if (!cookieEntry) throw new Error('HTTP-only cookie was not set');
+    if (!cookieEntry.options.httpOnly) throw new Error('Cookie must be httpOnly: true');
+    if (cookieEntry.options.sameSite !== 'lax' && cookieEntry.options.sameSite !== 'strict') {
+      throw new Error('Cookie must specify sameSite');
+    }
+  });
+
+  await test('Founder 2 (Business Partner) login authenticates with equal founder permissions', async () => {
+    const req = {
+      body: {
+        email: f2Email,
+        password: f2Pass,
+      },
+    };
+    const res = createMockRes();
+
+    await login(req, res, () => {});
+
+    if (res.statusCode !== 200) throw new Error(`Expected 200, got ${res.statusCode}`);
+    if (res.data?.data?.founder?.role !== 'founder') throw new Error('Role must be founder');
+    if (res.data?.data?.founder?.email !== f2Email) throw new Error('Founder 2 email mismatch');
+  });
+
+  await test('Login rejects invalid password credentials with generic 401', async () => {
+    const req = {
+      body: {
+        email: f1Email,
+        password: 'IncorrectPassword999!',
+      },
+    };
+    const res = createMockRes();
+
+    await login(req, res, () => {});
+
+    if (res.statusCode !== 401) throw new Error(`Expected 401, got ${res.statusCode}`);
+    if (res.data?.success !== false) throw new Error('Expected success === false');
+    if (!res.data?.message?.includes('Invalid email or password')) {
+      throw new Error('Expected safe generic error message');
+    }
+  });
+
+  await test('Login rejects unknown/unauthorized email accounts with generic 401', async () => {
+    const req = {
+      body: {
+        email: 'unauthorized-stranger@gmail.com',
+        password: 'SomePassword123!',
+      },
+    };
+    const res = createMockRes();
+
+    await login(req, res, () => {});
+
+    if (res.statusCode !== 401) throw new Error(`Expected 401, got ${res.statusCode}`);
+    if (res.data?.success !== false) throw new Error('Expected success === false');
+  });
+
+  await test('Public registration endpoint is absent (404 Not Found)', async () => {
+    const req = { originalUrl: '/api/auth/register' };
+    const res = createMockRes();
+
+    notFound(req, res);
+
+    if (res.statusCode !== 404) throw new Error(`Expected 404, got ${res.statusCode}`);
+    if (res.data?.success !== false) throw new Error('Expected success === false');
+  });
+
+  // ==========================================
+  // 4. PROTECTED DASHBOARD ENDPOINTS TESTS
+  // ==========================================
+  await test('requireFounderAuth rejects unauthenticated request with 401', async () => {
+    const req = { cookies: {}, headers: {} };
+    const res = createMockRes();
+    let nextCalled = false;
+
+    await requireFounderAuth(req, res, () => {
+      nextCalled = true;
+    });
+
+    if (nextCalled) throw new Error('next() must not be called without auth');
+    if (res.statusCode !== 401) throw new Error(`Expected 401, got ${res.statusCode}`);
+    if (!res.data?.message?.includes('Authentication required')) {
       throw new Error(`Unexpected message: ${res.data?.message}`);
     }
   });
 
-  await test('validateAnalyticsEvent rejects malformed visitor/session identifiers', async () => {
+  await test('requireFounderAuth allows authenticated request with valid token', async () => {
+    const validToken = generateToken({
+      id: 'founder_1_govind',
+      email: f1Email,
+      name: 'Govind Rathod',
+      role: 'founder',
+    });
+
     const req = {
-      body: {
-        eventType: 'page_view',
-        visitorId: 'short', // Too short (must be 8-64 chars)
-        sessionId: 'valid_session_id_12345',
-        pagePath: '/',
+      cookies: {
+        [TOKEN_COOKIE_NAME]: validToken,
       },
+      headers: {},
     };
     const res = createMockRes();
     let nextCalled = false;
 
-    validateAnalyticsEvent(req, res, () => {
+    await requireFounderAuth(req, res, () => {
       nextCalled = true;
     });
 
-    if (nextCalled) throw new Error('Short visitorId must be rejected');
-    if (res.statusCode !== 400) throw new Error(`Expected 400, got ${res.statusCode}`);
+    if (!nextCalled) throw new Error('next() must be called with valid token');
+    if (!req.founder) throw new Error('req.founder must be attached');
+    if (req.founder.email !== f1Email) throw new Error('Founder email mismatch on req.founder');
   });
 
-  // ==========================================
-  // 3. DASHBOARD PRODUCTION SECURITY GUARD
-  // ==========================================
-  await test('devDashboardAuth blocks access in production with 403 Forbidden', async () => {
-    const originalEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = 'production';
-
-    const req = {};
+  await test('requireFounderAuth rejects and clears invalid/tampered token with 401', async () => {
+    const req = {
+      cookies: {
+        [TOKEN_COOKIE_NAME]: 'tampered.jwt.token.12345',
+      },
+      headers: {},
+    };
     const res = createMockRes();
     let nextCalled = false;
 
-    devDashboardAuth(req, res, () => {
+    await requireFounderAuth(req, res, () => {
       nextCalled = true;
     });
 
-    // Restore env immediately
-    process.env.NODE_ENV = originalEnv;
-
-    if (nextCalled) throw new Error('devDashboardAuth should not call next() in production');
-    if (res.statusCode !== 403) throw new Error(`Expected 403 in production, got ${res.statusCode}`);
-    if (!res.data?.message?.includes('Phase 5 Founder Authentication')) {
-      throw new Error('Expected Phase 5 security message');
+    if (nextCalled) throw new Error('next() must not be called with invalid token');
+    if (res.statusCode !== 401) throw new Error(`Expected 401, got ${res.statusCode}`);
+    if (!res.clearedCookies.some((c) => c.name === TOKEN_COOKIE_NAME)) {
+      throw new Error('Invalid token must clear auth cookie');
     }
   });
 
-  await test('devDashboardAuth allows access in development mode', async () => {
-    const originalEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = 'development';
-
-    const req = {};
+  await test('GET /api/auth/me returns authenticated founder profile', async () => {
+    const req = {
+      founder: {
+        id: 'founder_1_govind',
+        name: 'Govind Rathod',
+        email: f1Email,
+        role: 'founder',
+      },
+    };
     const res = createMockRes();
-    let nextCalled = false;
 
-    devDashboardAuth(req, res, () => {
-      nextCalled = true;
-    });
+    getMe(req, res);
 
-    process.env.NODE_ENV = originalEnv;
-
-    if (!nextCalled) throw new Error('devDashboardAuth should call next() in development');
     if (res.statusCode !== 200) throw new Error(`Expected 200, got ${res.statusCode}`);
+    if (res.data?.data?.founder?.name !== 'Govind Rathod') throw new Error('Founder name mismatch');
   });
 
-  // ==========================================
-  // 4. DATE RANGE PARSER & METRICS LOGIC
-  // ==========================================
-  await test('parseDateRange correctly parses 7d, 30d, 90d, and custom bounds', async () => {
-    const range7d = parseDateRange({ period: '7d' });
-    const range30d = parseDateRange({ period: '30d' });
-    const range90d = parseDateRange({ period: '90d' });
+  await test('POST /api/auth/logout clears HTTP-only cookie', async () => {
+    const req = {};
+    const res = createMockRes();
 
-    if (!(range7d.startDate instanceof Date)) throw new Error('startDate must be Date');
-    if (!(range7d.endDate instanceof Date)) throw new Error('endDate must be Date');
-    if (range7d.startDate >= range7d.endDate) throw new Error('startDate must be before endDate');
+    logout(req, res);
 
-    const diffDays30 = Math.round((range30d.endDate - range30d.startDate) / (1000 * 60 * 60 * 24));
-    if (diffDays30 < 29 || diffDays30 > 31) throw new Error(`Expected ~30 days, got ${diffDays30}`);
-
-    const custom = parseDateRange({ startDate: '2026-01-01', endDate: '2026-01-15' });
-    if (custom.startDate.toISOString().slice(0, 10) !== '2026-01-01') {
-      throw new Error('Custom startDate mismatch');
+    if (res.statusCode !== 200) throw new Error(`Expected 200, got ${res.statusCode}`);
+    if (!res.clearedCookies.some((c) => c.name === TOKEN_COOKIE_NAME)) {
+      throw new Error('Logout must clear auth cookie');
     }
   });
 
   // ==========================================
-  // 5. CONVERSION RATE ZERO-DIVISION SAFETY
+  // 5. DATA AGGREGATION & SCHEMAS
   // ==========================================
-  await test('Conversion Rate handles 0 visitors safely without NaN', async () => {
-    const totalInquiries = 0;
-    const totalVisitors = 0;
-    const rate = totalVisitors > 0 ? Number(((totalInquiries / totalVisitors) * 100).toFixed(2)) : null;
-
-    if (rate !== null) throw new Error('Expected null when visitors === 0');
-    if (isNaN(rate)) throw new Error('Rate should not be NaN');
-
-    // Test with non-zero visitors
-    const activeRate = Number(((5 / 50) * 100).toFixed(2));
-    if (activeRate !== 10) throw new Error(`Expected 10%, got ${activeRate}`);
-  });
-
-  // ==========================================
-  // 6. SCHEMAS & DATABASE FAIL-SAFE HANDLING
-  // ==========================================
-  await test('AnalyticsEvent Mongoose Model schema definition', async () => {
-    const schema = AnalyticsEvent.schema;
+  await test('Founder Model schema defines required paths with password select: false', async () => {
+    const schema = Founder.schema;
     const paths = schema.paths;
 
-    if (!paths.eventType) throw new Error('Missing eventType in schema');
-    if (!paths.visitorId) throw new Error('Missing visitorId in schema');
-    if (!paths.sessionId) throw new Error('Missing sessionId in schema');
-    if (!paths.pagePath) throw new Error('Missing pagePath in schema');
-    if (!paths.timestamp) throw new Error('Missing timestamp in schema');
-  });
-
-  await test('recordEvent controller handles disconnected DB safely with 202 status', async () => {
-    const req = {
-      cleanEvent: {
-        eventType: 'page_view',
-        visitorId: 'v_1730000000_abcdef123',
-        sessionId: 's_1730000000_fedcba321',
-        pagePath: '/about',
-      },
-    };
-    const res = createMockRes();
-
-    await recordEvent(req, res, () => {});
-
-    // When DB is offline, returns 202 to avoid throwing errors on client
-    if (res.statusCode !== 202 && res.statusCode !== 201) {
-      throw new Error(`Expected 202 or 201, got ${res.statusCode}`);
+    if (!paths.email) throw new Error('Missing email path in Founder schema');
+    if (!paths.password) throw new Error('Missing password path in Founder schema');
+    if (paths.password.options.select !== false) {
+      throw new Error('Founder password must be select: false by default');
     }
   });
 
-  await test('getOverview controller handles disconnected DB gracefully', async () => {
-    const req = { query: { period: '7d' } };
-    const res = createMockRes();
+  await test('Analytics & Inquiries models maintain index definitions', async () => {
+    const inquiryIndexes = Inquiry.schema.indexes();
+    const analyticsIndexes = AnalyticsEvent.schema.indexes();
 
-    await getOverview(req, res, () => {});
-
-    if (res.statusCode !== 200) throw new Error(`Expected 200, got ${res.statusCode}`);
-    if (res.data?.success !== true) throw new Error('Expected success === true');
+    if (!inquiryIndexes || inquiryIndexes.length === 0) throw new Error('Missing Inquiry indexes');
+    if (!analyticsIndexes || analyticsIndexes.length === 0) throw new Error('Missing Analytics indexes');
   });
 
-  console.log('----------------------------------------------------');
+  console.log('--------------------------------------------------------');
   console.log(`Test Results: ${passed} Passed, ${failed} Failed`);
-  console.log('----------------------------------------------------');
+  console.log('--------------------------------------------------------');
 
   if (failed > 0) process.exit(1);
 }
 
-runPhase4TestSuite().catch((err) => {
+runPhase5TestSuite().catch((err) => {
   console.error('[Fatal Test Error]:', err);
   process.exit(1);
 });

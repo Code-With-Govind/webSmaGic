@@ -1,9 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import inquiryRoutes from './routes/inquiryRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 import notFound from './middleware/notFound.js';
 import errorHandler from './middleware/errorHandler.js';
 import { isDBConnected } from './config/db.js';
@@ -16,7 +18,7 @@ const app = express();
 // 1. Security Headers via Helmet
 app.use(helmet());
 
-// 2. CORS Configuration
+// 2. CORS Configuration with Credentials Support
 const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';
 app.use(
   cors({
@@ -28,13 +30,14 @@ app.use(
         callback(new Error('Blocked by CORS policy'));
       }
     },
-    credentials: true,
+    credentials: true, // Allow cookies over CORS
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 
-// 3. Body Parsers with strict size limits
+// 3. Body & Cookie Parsers
+app.use(cookieParser());
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
@@ -49,6 +52,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // 5. API Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/inquiries', inquiryRoutes);
 app.use('/api/analytics', analyticsRoutes);
 
@@ -57,4 +61,3 @@ app.use(notFound);
 app.use(errorHandler);
 
 export default app;
-

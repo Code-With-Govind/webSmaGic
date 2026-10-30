@@ -10,7 +10,7 @@ import {
   getInquiries,
 } from '../controllers/analyticsController.js';
 import { validateAnalyticsEvent } from '../middleware/validateAnalyticsEvent.js';
-import { devDashboardAuth } from '../middleware/devDashboardAuth.js';
+import { requireFounderAuth } from '../middleware/requireFounderAuth.js';
 
 const router = Router();
 
@@ -29,12 +29,12 @@ const eventRateLimiter = rateLimit({
 // 1. PUBLIC INGESTION ENDPOINT
 router.post('/events', eventRateLimiter, validateAnalyticsEvent, recordEvent);
 
-// 2. PRIVATE DASHBOARD AGGREGATION ENDPOINTS (Guarded by devDashboardAuth)
-router.get('/overview', devDashboardAuth, getOverview);
-router.get('/traffic', devDashboardAuth, getTraffic);
-router.get('/top-pages', devDashboardAuth, getPages);
-router.get('/sources', devDashboardAuth, getSources);
-router.get('/services', devDashboardAuth, getServices);
-router.get('/inquiries', devDashboardAuth, getInquiries);
+// 2. PRIVATE DASHBOARD AGGREGATION ENDPOINTS (Protected by requireFounderAuth)
+router.get('/overview', requireFounderAuth, getOverview);
+router.get('/traffic', requireFounderAuth, getTraffic);
+router.get('/top-pages', requireFounderAuth, getPages);
+router.get('/sources', requireFounderAuth, getSources);
+router.get('/services', requireFounderAuth, getServices);
+router.get('/inquiries', requireFounderAuth, getInquiries);
 
 export default router;

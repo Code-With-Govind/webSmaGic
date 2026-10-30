@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   BarChart3,
   Users,
@@ -12,19 +12,15 @@ import {
   RefreshCw,
   ShieldCheck,
   AlertCircle,
-  Lock,
-  Globe,
-  Share2,
+  LogOut,
   Calendar,
-  ChevronRight,
   Sparkles,
+  User,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
   AreaChart,
   Area,
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -33,9 +29,12 @@ import {
 } from 'recharts';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import dashboardService from '../services/dashboardService';
+import { useAuth } from '../context/AuthContext';
 
 export default function DashboardPage() {
   useDocumentTitle('Business Analytics Dashboard — Founders Portal');
+  const navigate = useNavigate();
+  const { founder, logout } = useAuth();
 
   const [activeTab, setActiveTab] = useState('overview');
   const [period, setPeriod] = useState('7d');
@@ -44,16 +43,7 @@ export default function DashboardPage() {
   const [error, setError] = useState(null);
   const [lastRefreshed, setLastRefreshed] = useState(new Date());
 
-  // Determine if application is running in production mode
-  const isProduction = import.meta.env.PROD;
-
   const fetchData = useCallback(async () => {
-    // If running in production build, enforce Phase 5 security boundary
-    if (isProduction) {
-      setLoading(false);
-      return;
-    }
-
     setLoading(true);
     setError(null);
     try {
@@ -61,65 +51,26 @@ export default function DashboardPage() {
       setData(result);
       setLastRefreshed(new Date());
     } catch (err) {
-      setError(
-        err.status === 403
-          ? 'Dashboard analytics is locked in production pending Phase 5 Founder Authentication & Security.'
-          : err.message || 'Failed to connect to backend analytics service.'
-      );
+      if (err.status === 401) {
+        // Session expired: logout and redirect to login
+        await logout();
+        navigate('/login', { replace: true });
+        return;
+      }
+      setError(err.message || 'Failed to connect to backend analytics service.');
     } finally {
       setLoading(false);
     }
-  }, [period, isProduction]);
+  }, [period, logout, navigate]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  // Production Lockdown View (Strict Phase 4 Boundary)
-  if (isProduction || error?.includes('Phase 5')) {
-    return (
-      <div className="py-24 md:py-36 min-h-[80vh] flex items-center justify-center">
-        <div className="max-w-xl mx-auto px-4 text-center">
-          <div className="p-8 sm:p-12 rounded-3xl bg-navy-900/90 border border-navy-850 shadow-2xl relative overflow-hidden">
-            <div className="w-16 h-16 rounded-3xl bg-navy-850 text-brand-accent border border-navy-750 flex items-center justify-center mx-auto mb-6 shadow-lg">
-              <Lock className="w-8 h-8 text-brand-accent" />
-            </div>
-
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 text-xs font-semibold border border-amber-500/20 mb-4">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Production Security Guard</span>
-            </div>
-
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">
-              Private Founder Dashboard
-            </h1>
-
-            <p className="text-sm text-slate-300 leading-relaxed mb-6">
-              In accordance with architectural specifications, private business telemetry and lead metrics are restricted from public production access until Phase 5 (Two-Founder Authentication & Security) is deployed.
-            </p>
-
-            <div className="p-4 rounded-xl bg-navy-950/80 border border-navy-800 text-left text-xs text-slate-400 space-y-2 mb-8">
-              <div className="flex items-center gap-2 text-white font-semibold">
-                <Sparkles className="w-4 h-4 text-brand-accent" />
-                <span>Local Verification Mode</span>
-              </div>
-              <p>
-                To preview the live analytics dashboard with real-time charts and event tracking, run the application in local development mode (<code className="text-brand-accent font-mono">npm run dev</code>).
-              </p>
-            </div>
-
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-primary hover:bg-brand-secondary text-white text-sm font-semibold transition-colors shadow-md shadow-brand-primary/20"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Return to Public Website</span>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login', { replace: true });
+  };
 
   const overview = data?.overview || {
     totalVisitors: 0,
@@ -151,7 +102,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-navy-950 text-slate-100 flex flex-col">
       {/* Top Header Bar */}
       <header className="bg-navy-900/90 border-b border-navy-800 sticky top-0 z-40 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Link
               to="/"
@@ -165,8 +116,8 @@ export default function DashboardPage() {
                 <h1 className="text-lg font-bold text-white tracking-tight">
                   Business Analytics Dashboard
                 </h1>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-brand-accent border border-blue-500/20">
-                  Founder Mode (Development)
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  Authenticated Session
                 </span>
               </div>
               <p className="text-xs text-slate-400">
@@ -175,8 +126,24 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Date range controls & refresh */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Right Controls: Founder badge, Date range, Refresh, Logout */}
+          <div className="flex items-center gap-3">
+            {/* Authenticated Founder Info */}
+            <div className="hidden lg:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-navy-950 border border-navy-800 text-xs">
+              <div className="w-6 h-6 rounded-lg bg-brand-primary/20 text-brand-accent flex items-center justify-center font-bold text-[10px]">
+                <User className="w-3.5 h-3.5" />
+              </div>
+              <div className="text-left">
+                <span className="text-white font-semibold block leading-tight">
+                  {founder?.name || 'Authorized Founder'}
+                </span>
+                <span className="text-[10px] text-slate-400 block leading-tight">
+                  {founder?.email || ''}
+                </span>
+              </div>
+            </div>
+
+            {/* Date Range Selector */}
             <div className="hidden sm:flex items-center bg-navy-950 p-1 rounded-xl border border-navy-800 text-xs">
               {['7d', '30d', '90d'].map((p) => (
                 <button
@@ -193,6 +160,7 @@ export default function DashboardPage() {
               ))}
             </div>
 
+            {/* Refresh */}
             <button
               onClick={fetchData}
               disabled={loading}
@@ -200,6 +168,16 @@ export default function DashboardPage() {
               title="Refresh Analytics"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            </button>
+
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-navy-850 hover:bg-red-500/20 text-slate-300 hover:text-red-300 border border-navy-750 hover:border-red-500/30 transition-colors text-xs font-semibold"
+              title="Log Out of Dashboard"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Log Out</span>
             </button>
           </div>
         </div>
@@ -231,8 +209,8 @@ export default function DashboardPage() {
           </div>
 
           <div className="p-4 rounded-2xl bg-navy-900/50 border border-navy-800 text-[11px] text-slate-400 space-y-2">
-            <span className="font-semibold text-slate-300 block">Telemetry Status</span>
-            <p>First-party privacy tracking active. IP anonymized.</p>
+            <span className="font-semibold text-slate-300 block">Session Guard</span>
+            <p>Protected by HTTP-only signed tokens & brute-force rate limiting.</p>
             <span className="text-[10px] text-slate-500 block">
               Refreshed: {lastRefreshed.toLocaleTimeString()}
             </span>

@@ -2,15 +2,19 @@ import http from 'http';
 import dotenv from 'dotenv';
 import app from './app.js';
 import { connectDB } from './config/db.js';
+import { seedFounders } from './services/founderProvisioningService.js';
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
-// Initialize Database & Start Server
+// Initialize Database, Provision Founders & Start Server
 const startServer = async () => {
   console.log('[Server Startup] Connecting to database...');
   await connectDB();
+
+  // Provision authorized founder accounts if DB is connected
+  await seedFounders();
 
   const server = http.createServer(app);
 
@@ -40,4 +44,3 @@ startServer().catch((err) => {
   console.error('[Fatal Error] Failed to start server:', err);
   process.exit(1);
 });
-

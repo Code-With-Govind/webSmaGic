@@ -167,3 +167,4 @@ export const getInquiries = async (req, res, next) => {
     next(error);
   }
 };
+

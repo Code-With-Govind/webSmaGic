@@ -2,27 +2,31 @@ import { API_BASE_URL } from './api';
 
 export const dashboardService = {
   /**
-   * Fetch complete dashboard dataset in parallel
+   * Fetch complete dashboard dataset in parallel with credentials
    */
   async getDashboardData(period = '7d') {
     const query = `?period=${encodeURIComponent(period)}`;
+    const fetchOptions = {
+      headers: {
+        Accept: 'application/json',
+      },
+      credentials: 'include', // Transmit HTTP-only founder session cookie
+    };
 
     const [overviewRes, trafficRes, pagesRes, sourcesRes, servicesRes, inquiriesRes] =
       await Promise.all([
-        fetch(`${API_BASE_URL}/analytics/overview${query}`),
-        fetch(`${API_BASE_URL}/analytics/traffic${query}`),
-        fetch(`${API_BASE_URL}/analytics/top-pages${query}`),
-        fetch(`${API_BASE_URL}/analytics/sources${query}`),
-        fetch(`${API_BASE_URL}/analytics/services${query}`),
-        fetch(`${API_BASE_URL}/analytics/inquiries${query}`),
+        fetch(`${API_BASE_URL}/analytics/overview${query}`, fetchOptions),
+        fetch(`${API_BASE_URL}/analytics/traffic${query}`, fetchOptions),
+        fetch(`${API_BASE_URL}/analytics/top-pages${query}`, fetchOptions),
+        fetch(`${API_BASE_URL}/analytics/sources${query}`, fetchOptions),
+        fetch(`${API_BASE_URL}/analytics/services${query}`, fetchOptions),
+        fetch(`${API_BASE_URL}/analytics/inquiries${query}`, fetchOptions),
       ]);
 
-    // Check if access is forbidden (production lockdown guard)
-    if (overviewRes.status === 403) {
-      const err = new Error(
-        'Dashboard analytics endpoints are locked pending Phase 5 Founder Authentication & Security.'
-      );
-      err.status = 403;
+    // Check if session is unauthenticated / expired
+    if (overviewRes.status === 401) {
+      const err = new Error('Authentication required. Session expired or invalid.');
+      err.status = 401;
       throw err;
     }
 

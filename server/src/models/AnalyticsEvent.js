@@ -92,3 +92,4 @@ analyticsEventSchema.index({ timestamp: -1, source: 1 });
 const AnalyticsEvent = mongoose.model('AnalyticsEvent', analyticsEventSchema);
 
 export default AnalyticsEvent;
+
