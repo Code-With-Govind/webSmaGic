@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import inquiryService from '../services/inquiryService';
+import { trackInquiryAttempt, trackInquirySuccess } from '../utils/analytics';
 import { AGENCY_SERVICES } from '../utils/agencyData';
 
 export default function ContactPage() {
@@ -111,6 +112,7 @@ export default function ContactPage() {
 
     if (Object.keys(validationErrors).length === 0) {
       setIsSubmitting(true);
+      trackInquiryAttempt();
       try {
         const payload = {
           fullName: formData.fullName.trim(),
@@ -124,6 +126,7 @@ export default function ContactPage() {
         };
 
         const result = await inquiryService.submitInquiry(payload);
+        trackInquirySuccess();
 
         // Success: record ID, reset form state
         setSubmittedInquiryId(result.data?.id || null);

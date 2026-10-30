@@ -83,3 +83,4 @@ inquirySchema.index({ createdAt: -1 });
 const Inquiry = mongoose.model('Inquiry', inquirySchema);
 
 export default Inquiry;
+

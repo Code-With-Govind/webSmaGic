@@ -21,3 +21,4 @@ const inquiryRateLimiter = rateLimit({
 router.post('/', inquiryRateLimiter, validateInquiry, createInquiry);
 
 export default router;
+

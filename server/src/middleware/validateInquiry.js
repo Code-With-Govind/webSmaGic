@@ -96,3 +96,4 @@ export const validateInquiry = (req, res, next) => {
 };
 
 export default validateInquiry;
+

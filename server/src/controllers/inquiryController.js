@@ -53,3 +53,4 @@ export const createInquiry = async (req, res, next) => {
     next(error);
   }
 };
+

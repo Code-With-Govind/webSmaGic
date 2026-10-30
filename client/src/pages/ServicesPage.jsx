@@ -13,6 +13,7 @@ import useDocumentTitle from '../hooks/useDocumentTitle';
 import SectionHeading from '../components/common/SectionHeading';
 import Badge from '../components/common/Badge';
 import DynamicIcon from '../components/common/DynamicIcon';
+import { trackServiceClick } from '../utils/analytics';
 import { AGENCY_SERVICES } from '../utils/agencyData';
 
 export default function ServicesPage() {
@@ -81,6 +82,7 @@ export default function ServicesPage() {
                   <div className="pt-2">
                     <Link
                       to={`/contact?service=${encodeURIComponent(service.title)}`}
+                      onClick={() => trackServiceClick(service.title)}
                       className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-primary hover:bg-brand-secondary text-white text-sm font-semibold shadow-md shadow-brand-primary/20 hover:shadow-lg transition-all"
                     >
                       <span>Discuss {service.title}</span>

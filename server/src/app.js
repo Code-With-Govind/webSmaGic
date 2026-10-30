@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import inquiryRoutes from './routes/inquiryRoutes.js';
+import analyticsRoutes from './routes/analyticsRoutes.js';
 import notFound from './middleware/notFound.js';
 import errorHandler from './middleware/errorHandler.js';
 import { isDBConnected } from './config/db.js';
@@ -49,9 +50,11 @@ app.get('/api/health', (req, res) => {
 
 // 5. API Routes
 app.use('/api/inquiries', inquiryRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // 6. 404 Catch-All & Error Handler
 app.use(notFound);
 app.use(errorHandler);
 
 export default app;
+
