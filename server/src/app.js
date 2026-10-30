@@ -15,24 +15,37 @@ dotenv.config();
 
 const app = express();
 
-// 1. Security Headers via Helmet
+// 1. Trust reverse proxy (e.g. Render, AWS, Cloudflare, Nginx)
+app.set('trust proxy', 1);
+
+// 2. Security Headers via Helmet
 app.use(helmet());
 
-// 2. CORS Configuration with Credentials Support
-const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';
+// 3. CORS Configuration with Multi-Origin & Credentials Support
+const rawClientUrls = process.env.CLIENT_URL || 'http://localhost:5173';
+const allowedOrigins = rawClientUrls
+  .split(',')
+  .map((url) => url.trim().replace(/\/$/, ''))
+  .filter(Boolean);
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server) or matching origin
-      if (!origin || origin === allowedOrigin || process.env.NODE_ENV === 'development') {
-        callback(null, true);
-      } else {
-        callback(new Error('Blocked by CORS policy'));
+      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server, health check probes)
+      if (!origin) {
+        return callback(null, true);
       }
+      if (process.env.NODE_ENV === 'development') {
+        return callback(null, true);
+      }
+      if (allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+        return callback(null, true);
+      }
+      return callback(new Error(`Blocked by CORS policy: Origin ${origin} is not allowed`));
     },
     credentials: true, // Allow cookies over CORS
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   })
 );
 
@@ -41,7 +54,16 @@ app.use(cookieParser());
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
-// 4. Health-Check Endpoint
+// 4. API Status & Health-Check Endpoints
+app.get('/', (req, res) => {
+  return sendSuccess(res, 200, 'Govind Web Solutions API Server', {
+    service: 'Govind Web Solutions Backend API',
+    status: 'online',
+    healthCheck: '/api/health',
+    version: '1.0.0',
+  });
+});
+
 app.get('/api/health', (req, res) => {
   return sendSuccess(res, 200, 'Govind Web Solutions API is operational', {
     status: 'healthy',

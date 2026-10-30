@@ -56,3 +56,4 @@ founderSchema.statics.hashPassword = async function (plainPassword) {
 const Founder = mongoose.model('Founder', founderSchema);
 
 export default Founder;
+

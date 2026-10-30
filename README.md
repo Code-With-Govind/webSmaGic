@@ -143,4 +143,12 @@ npm run client:build
 - [x] **Phase 3: Backend and Contact Inquiries** — Express REST API, Mongoose Inquiry model, server-side validation & sanitization, rate limiting, and real frontend contact form integration.
 - [x] **Phase 4: Analytics Dashboard** — First-party telemetry collection, MongoDB aggregation pipelines, date filtering (7d/30d/90d), Recharts visualizations, and private founder dashboard.
 - [x] **Phase 5: Founder Authentication and Security** — Two founder accounts, secure HTTP-only cookies, session management, protected routes, and login experience.
-- [ ] **Phase 6: Testing and Deployment** — QA, security verification, Vercel & Render deployment.
+- [x] **Phase 6: Testing and Deployment** — End-to-end quality assurance, production CORS and cookie hardening, automated test suite (20/20 passed), Vercel SPA routing (`client/vercel.json`), Render blueprint (`render.yaml`), and comprehensive [DEPLOYMENT.md](file:///c:/Users/ASUS/OneDrive/Documents/My%20Projects/Websmagic/DEPLOYMENT.md) production guide.
+
+---
+
+## Production Deployment
+
+For step-by-step instructions on deploying the database to **MongoDB Atlas**, the backend API to **Render**, and the frontend to **Vercel**, refer to the complete deployment guide:
+
+👉 **[DEPLOYMENT.md](file:///c:/Users/ASUS/OneDrive/Documents/My%20Projects/Websmagic/DEPLOYMENT.md)**

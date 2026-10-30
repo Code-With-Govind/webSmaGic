@@ -60,3 +60,4 @@ export const requireFounderAuth = async (req, res, next) => {
 };
 
 export default requireFounderAuth;
+

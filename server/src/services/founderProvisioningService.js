@@ -43,3 +43,4 @@ export const seedFounders = async () => {
 };
 
 export default seedFounders;
+

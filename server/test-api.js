@@ -6,7 +6,7 @@ import { errorHandler } from './src/middleware/errorHandler.js';
 import { createInquiry } from './src/controllers/inquiryController.js';
 import { recordEvent, getOverview } from './src/controllers/analyticsController.js';
 import { login, logout, getMe } from './src/controllers/authController.js';
-import { generateToken, verifyToken, TOKEN_COOKIE_NAME } from './src/utils/tokenUtils.js';
+import { generateToken, verifyToken, setAuthCookie, clearAuthCookie, TOKEN_COOKIE_NAME } from './src/utils/tokenUtils.js';
 import { parseDateRange } from './src/services/analyticsService.js';
 import Inquiry from './src/models/Inquiry.js';
 import AnalyticsEvent from './src/models/AnalyticsEvent.js';
@@ -46,9 +46,9 @@ function createMockRes() {
 }
 
 async function runPhase5TestSuite() {
-  console.log('========================================================');
-  console.log('Govind Web Solutions — Comprehensive Phase 5 Test Suite');
-  console.log('========================================================');
+  console.log('================================================================');
+  console.log('Govind Web Solutions — Phase 6 Test Suite (End-to-End & Deployment)');
+  console.log('================================================================');
   let passed = 0;
   let failed = 0;
 
@@ -356,6 +356,95 @@ async function runPhase5TestSuite() {
 
     if (!inquiryIndexes || inquiryIndexes.length === 0) throw new Error('Missing Inquiry indexes');
     if (!analyticsIndexes || analyticsIndexes.length === 0) throw new Error('Missing Analytics indexes');
+  });
+
+  // ==========================================
+  // 6. PHASE 6 PRODUCTION & DEPLOYMENT TESTS
+  // ==========================================
+  await test('setAuthCookie handles cross-site sameSite=none and secure=true', async () => {
+    const prevSite = process.env.COOKIE_SAMESITE;
+    const prevEnv = process.env.NODE_ENV;
+    try {
+      process.env.COOKIE_SAMESITE = 'none';
+      const res = createMockRes();
+      setAuthCookie(res, 'test-token');
+      const cookie = res.cookies[TOKEN_COOKIE_NAME];
+      if (!cookie) throw new Error('Cookie not set');
+      if (cookie.options.sameSite !== 'none') throw new Error(`Expected sameSite=none, got ${cookie.options.sameSite}`);
+      if (!cookie.options.secure) throw new Error('Cookie must be secure when sameSite=none');
+    } finally {
+      process.env.COOKIE_SAMESITE = prevSite;
+      process.env.NODE_ENV = prevEnv;
+    }
+  });
+
+  await test('createInquiry handles graceful degradation when database is offline (503)', async () => {
+    const req = {
+      cleanData: {
+        fullName: 'Govind Rathod',
+        email: 'govind@example.com',
+        phone: '+91 9876543210',
+        company: 'Test Corp',
+        service: 'Custom Web Application',
+        budget: '$10,000+',
+        projectDescription: 'Enterprise software inquiry test.',
+        preferredContactMethod: 'Email',
+      },
+    };
+    const res = createMockRes();
+    let nextCalled = false;
+
+    await createInquiry(req, res, () => {
+      nextCalled = true;
+    });
+
+    if (res.statusCode !== 503) {
+      throw new Error(`Expected 503 database unavailable, got ${res.statusCode}`);
+    }
+    if (res.data?.success !== false) {
+      throw new Error('Expected data.success to be false');
+    }
+    if (!res.data?.message?.includes('temporarily unavailable')) {
+      throw new Error(`Unexpected message: ${res.data?.message}`);
+    }
+  });
+
+  await test('recordEvent accepts telemetry with 202 when database is offline without failing', async () => {
+    const req = {
+      cleanEvent: {
+        eventType: 'page_view',
+        visitorId: 'v_test_123',
+        sessionId: 's_test_123',
+        pagePath: '/projects',
+      },
+    };
+    const res = createMockRes();
+
+    await recordEvent(req, res, () => {});
+
+    if (res.statusCode !== 202) {
+      throw new Error(`Expected 202 accepted, got ${res.statusCode}`);
+    }
+    if (res.data?.success !== true) {
+      throw new Error('Expected data.success to be true');
+    }
+  });
+
+  await test('getOverview returns zeroed KPI metrics when database is offline', async () => {
+    const req = { query: { period: '7d' } };
+    const res = createMockRes();
+
+    await getOverview(req, res, () => {});
+
+    if (res.statusCode !== 200) {
+      throw new Error(`Expected 200, got ${res.statusCode}`);
+    }
+    if (res.data?.data?.totalVisitors !== 0) {
+      throw new Error('Expected totalVisitors === 0');
+    }
+    if (res.data?.data?.dbStatus !== 'disconnected') {
+      throw new Error('Expected dbStatus === disconnected');
+    }
   });
 
   console.log('--------------------------------------------------------');

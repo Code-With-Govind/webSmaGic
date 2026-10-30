@@ -23,3 +23,4 @@ router.post('/logout', logout);
 router.get('/me', requireFounderAuth, getMe);
 
 export default router;
+

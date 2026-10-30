@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: govind-web-solutions-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CLIENT_URL
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: COOKIE_SAMESITE
+        value: none
+      - key: FOUNDER_1_NAME
+        value: Govind Rathod
+      - key: FOUNDER_1_EMAIL
+        sync: false
+      - key: FOUNDER_1_PASSWORD
+        sync: false
+      - key: FOUNDER_2_NAME
+        value: Co-founder (Business Development)
+      - key: FOUNDER_2_EMAIL
+        sync: false
+      - key: FOUNDER_2_PASSWORD
+        sync: false

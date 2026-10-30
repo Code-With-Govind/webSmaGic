@@ -28,10 +28,13 @@ export const verifyToken = (token) => {
  */
 export const setAuthCookie = (res, token) => {
   const isProduction = process.env.NODE_ENV === 'production';
+  const sameSite = process.env.COOKIE_SAMESITE || (isProduction ? 'none' : 'lax');
+  const secure = isProduction || sameSite === 'none';
+
   res.cookie(TOKEN_COOKIE_NAME, token, {
     httpOnly: true,
-    secure: isProduction, // HTTPS required in production
-    sameSite: isProduction ? 'strict' : 'lax',
+    secure,
+    sameSite,
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
     path: '/',
   });
@@ -42,12 +45,16 @@ export const setAuthCookie = (res, token) => {
  */
 export const clearAuthCookie = (res) => {
   const isProduction = process.env.NODE_ENV === 'production';
+  const sameSite = process.env.COOKIE_SAMESITE || (isProduction ? 'none' : 'lax');
+  const secure = isProduction || sameSite === 'none';
+
   res.clearCookie(TOKEN_COOKIE_NAME, {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? 'strict' : 'lax',
+    secure,
+    sameSite,
     path: '/',
   });
 };
 
 export { TOKEN_COOKIE_NAME };
+
