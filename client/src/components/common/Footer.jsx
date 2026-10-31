@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Code2, ArrowUp, Mail, Phone, MapPin, Github, Linkedin, Globe, Shield } from 'lucide-react';
-import { AGENCY_SERVICES } from '../../utils/agencyData';
+import { Code2, ArrowUp, Mail, Phone, MapPin, Github, Linkedin, Globe, Shield, MessageCircle } from 'lucide-react';
+import { AGENCY_SERVICES, COMPANY_CONFIG, getWhatsAppInquiryUrl } from '../../utils/agencyData';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -118,7 +118,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Information Placeholders */}
+          {/* Direct Agency Channels */}
           <div>
             <h4 className="text-white text-xs font-bold uppercase tracking-wider mb-4">
               Direct Contact
@@ -128,22 +128,31 @@ export default function Footer() {
                 <Mail className="w-4 h-4 text-brand-accent shrink-0 mt-0.5" />
                 <div>
                   <span className="block text-slate-400 text-[11px] uppercase tracking-wider">Business Email</span>
-                  <span className="text-slate-200 font-medium">contact@govindwebsolutions.com</span>
-                  <span className="block text-[10px] text-slate-400 italic">(Verified address to be configured)</span>
+                  <a href={`mailto:${COMPANY_CONFIG.email}`} className="text-slate-200 hover:text-brand-accent font-medium transition-colors">
+                    {COMPANY_CONFIG.email}
+                  </a>
                 </div>
               </li>
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-brand-accent shrink-0 mt-0.5" />
                 <div>
                   <span className="block text-slate-400 text-[11px] uppercase tracking-wider">Location</span>
-                  <span className="text-slate-200 font-medium">India & Remote Global Delivery</span>
+                  <span className="text-slate-200 font-medium">{COMPANY_CONFIG.location}</span>
                 </div>
               </li>
               <li className="flex items-start gap-2.5">
-                <Phone className="w-4 h-4 text-brand-accent shrink-0 mt-0.5" />
+                <Phone className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block text-slate-400 text-[11px] uppercase tracking-wider">Direct WhatsApp / Phone</span>
-                  <span className="text-slate-300 font-mono text-[11px]">[Details to be provided]</span>
+                  <span className="block text-slate-400 text-[11px] uppercase tracking-wider">Direct WhatsApp</span>
+                  <a
+                    href={getWhatsAppInquiryUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-emerald-400 hover:underline font-mono text-[11px] inline-flex items-center gap-1"
+                  >
+                    <span>{COMPANY_CONFIG.phoneDisplay}</span>
+                  </a>
+                  <span className="block text-[10px] text-slate-500 mt-0.5">{COMPANY_CONFIG.operatingHours}</span>
                 </div>
               </li>
             </ul>

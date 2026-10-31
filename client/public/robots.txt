@@ -1,0 +1,17 @@
+# robots.txt for Govind Web Solutions (https://govindwebsolutions.com)
+User-agent: *
+Allow: /
+Allow: /about
+Allow: /services
+Allow: /projects
+Allow: /founders
+Allow: /contact
+
+# Protect private dashboard and backend endpoints from search spiders
+Disallow: /dashboard
+Disallow: /dashboard/*
+Disallow: /login
+Disallow: /api/
+Disallow: /api/*
+
+Sitemap: https://govindwebsolutions.com/sitemap.xml

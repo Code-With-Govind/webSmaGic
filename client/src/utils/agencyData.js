@@ -1,4 +1,44 @@
-// Agency Services, Projects, Technologies, and Team Data
+// Agency Services, Projects, Technologies, Team Data & Company Configuration
+
+/**
+ * Centralized, configurable company configuration & contact channels
+ */
+export const COMPANY_CONFIG = {
+  name: 'Govind Web Solutions',
+  tagline: 'Professional Web Development & Digital Solutions Agency',
+  email: 'contact@govindwebsolutions.com',
+  phoneDisplay: '+91 98765 43210',
+  whatsappNumber: '919876543210', // Digits only with country code (e.g. 91 for India)
+  location: 'India — Delivering Worldwide Remotely',
+  operatingHours: 'Monday – Saturday: 9:00 AM – 8:00 PM IST',
+  responseTime: 'Replies within 24 business hours (Instant on WhatsApp)',
+};
+
+/**
+ * Generate formatted WhatsApp chat inquiry URL with pre-filled context
+ * @param {Object} options
+ * @param {string} [options.service] - Requested service title
+ * @param {string} [options.name] - Client full name
+ * @param {string} [options.context] - Additional message context
+ * @returns {string} Fully encoded wa.me deep link
+ */
+export const getWhatsAppInquiryUrl = ({ service, name, context } = {}) => {
+  let message = `Hi Govind Web Solutions!`;
+  if (name && name.trim()) {
+    message += ` My name is ${name.trim()}.`;
+  }
+  if (service && service.trim()) {
+    message += ` I am interested in your "${service.trim()}" service.`;
+  } else {
+    message += ` I would like to inquire about a website development project for my business.`;
+  }
+  if (context && context.trim()) {
+    message += ` ${context.trim()}`;
+  }
+  message += ` Could we discuss the requirements and timeline?`;
+
+  return `https://wa.me/${COMPANY_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
+};
 
 export const AGENCY_SERVICES = [
   {

@@ -11,11 +11,12 @@ import {
   Sparkles,
   ArrowRight,
   RefreshCw,
+  MessageCircle,
 } from 'lucide-react';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import inquiryService from '../services/inquiryService';
 import { trackInquiryAttempt, trackInquirySuccess } from '../utils/analytics';
-import { AGENCY_SERVICES } from '../utils/agencyData';
+import { AGENCY_SERVICES, COMPANY_CONFIG, getWhatsAppInquiryUrl } from '../utils/agencyData';
 
 export default function ContactPage() {
   useDocumentTitle('Contact Us — Project Inquiries & Consultations');
@@ -220,6 +221,17 @@ export default function ContactPage() {
                 </div>
 
                 <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <a
+                    href={getWhatsAppInquiryUrl({
+                      context: submittedInquiryId ? `My inquiry reference ID is ${submittedInquiryId}.` : '',
+                    })}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition-colors shadow-lg shadow-emerald-900/30"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Ping Us on WhatsApp for Priority Response</span>
+                  </a>
                   <button
                     onClick={handleReset}
                     className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-primary hover:bg-brand-secondary text-white text-sm font-semibold transition-colors"
@@ -480,6 +492,29 @@ export default function ContactPage() {
                       </label>
                     ))}
                   </div>
+
+                  {/* Immediate WhatsApp Action if WhatsApp is Selected */}
+                  {formData.contactMethod === 'WhatsApp' && (
+                    <div className="mt-4 p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-emerald-200">
+                      <div>
+                        <span className="font-semibold block text-emerald-300">Need an immediate answer right now?</span>
+                        <span className="text-slate-300 text-[11px]">You can start a direct chat with our founders with pre-filled project details.</span>
+                      </div>
+                      <a
+                        href={getWhatsAppInquiryUrl({
+                          name: formData.fullName,
+                          service: formData.service,
+                          context: formData.description ? `Brief note: ${formData.description.substring(0, 100)}` : '',
+                        })}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-colors shrink-0 shadow-md shadow-emerald-900/40"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        <span>Chat on WhatsApp</span>
+                      </a>
+                    </div>
+                  )}
                 </div>
 
                 {/* Submit Button */}
@@ -509,12 +544,37 @@ export default function ContactPage() {
             )}
           </div>
 
-          {/* Right Column: Contact Details & Guarantee */}
+          {/* Right Column: Contact Details & Fast-Track WhatsApp */}
           <div className="lg:col-span-4 space-y-6">
-            {/* Direct Contact Card */}
+            {/* Instant WhatsApp Consultation Card */}
+            <div className="p-7 rounded-3xl bg-gradient-to-br from-emerald-950/40 via-navy-900 to-navy-900 border border-emerald-500/30 space-y-4 shadow-xl">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                  <MessageCircle className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">Instant WhatsApp Chat</h3>
+                  <span className="text-[11px] text-emerald-400 font-semibold block">Founder Direct Channel</span>
+                </div>
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Have a project brief, timeline question, or need a preliminary quotation? Connect with our founders directly on WhatsApp for an immediate consultation.
+              </p>
+              <a
+                href={getWhatsAppInquiryUrl({ service: formData.service, name: formData.fullName })}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-all shadow-md shadow-emerald-900/30 hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Chat on WhatsApp ({COMPANY_CONFIG.phoneDisplay})</span>
+              </a>
+            </div>
+
+            {/* Direct Contact Details Card */}
             <div className="p-7 rounded-3xl bg-navy-900/90 border border-navy-800 space-y-6 shadow-xl">
               <h3 className="text-lg font-bold text-white border-b border-navy-800 pb-3">
-                Agency Information
+                Official Agency Channels
               </h3>
 
               <div className="space-y-5 text-sm">
@@ -524,14 +584,14 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <span className="block text-xs uppercase tracking-wider text-slate-400 font-semibold">
-                      Business Inquiries
+                      Business Email
                     </span>
-                    <span className="text-white font-medium text-xs break-all">
-                      contact@govindwebsolutions.com
-                    </span>
-                    <span className="block text-[10px] text-slate-400 italic">
-                      (Verified mailbox to be connected)
-                    </span>
+                    <a
+                      href={`mailto:${COMPANY_CONFIG.email}`}
+                      className="text-white hover:text-brand-accent font-medium text-xs break-all transition-colors"
+                    >
+                      {COMPANY_CONFIG.email}
+                    </a>
                   </div>
                 </div>
 
@@ -543,9 +603,15 @@ export default function ContactPage() {
                     <span className="block text-xs uppercase tracking-wider text-slate-400 font-semibold">
                       Phone & WhatsApp
                     </span>
-                    <span className="text-slate-300 font-mono text-xs">
-                      [Verified details to be provided]
-                    </span>
+                    <a
+                      href={getWhatsAppInquiryUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-emerald-400 hover:underline font-mono text-xs block"
+                    >
+                      {COMPANY_CONFIG.phoneDisplay}
+                    </a>
+                    <span className="text-[10px] text-slate-400 block">{COMPANY_CONFIG.operatingHours}</span>
                   </div>
                 </div>
 
@@ -558,7 +624,7 @@ export default function ContactPage() {
                       Location & Operating Model
                     </span>
                     <span className="text-white text-xs">
-                      India — Delivering Worldwide Remotely
+                      {COMPANY_CONFIG.location}
                     </span>
                   </div>
                 </div>
@@ -572,7 +638,7 @@ export default function ContactPage() {
                       Response Standard
                     </span>
                     <span className="text-white text-xs">
-                      Replies within 24 business hours
+                      {COMPANY_CONFIG.responseTime}
                     </span>
                   </div>
                 </div>

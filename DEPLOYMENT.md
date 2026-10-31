@@ -221,3 +221,4 @@ Complete the following checklist to verify full operational readiness:
 - **Symptom**: `/api/health` returns `"database": "disconnected"`.
 - **Cause**: IP Whitelist in MongoDB Atlas does not permit Render's IP address.
 - **Fix**: In MongoDB Atlas > Security > Network Access, add `0.0.0.0/0` (Allow Access from Anywhere).
+
