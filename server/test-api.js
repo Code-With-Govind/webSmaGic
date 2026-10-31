@@ -3,7 +3,7 @@ import { validateAnalyticsEvent } from './src/middleware/validateAnalyticsEvent.
 import { requireFounderAuth } from './src/middleware/requireFounderAuth.js';
 import { notFound } from './src/middleware/notFound.js';
 import { errorHandler } from './src/middleware/errorHandler.js';
-import { createInquiry } from './src/controllers/inquiryController.js';
+import { createInquiry, getInquiriesList, updateInquiryStatus } from './src/controllers/inquiryController.js';
 import { recordEvent, getOverview } from './src/controllers/analyticsController.js';
 import { login, logout, getMe } from './src/controllers/authController.js';
 import { generateToken, verifyToken, setAuthCookie, clearAuthCookie, TOKEN_COOKIE_NAME } from './src/utils/tokenUtils.js';
@@ -444,6 +444,62 @@ async function runPhase5TestSuite() {
     }
     if (res.data?.data?.dbStatus !== 'disconnected') {
       throw new Error('Expected dbStatus === disconnected');
+    }
+  });
+
+  // ==========================================
+  // 7. PHASE E: FOUNDER INQUIRIES MINI-CRM TESTS
+  // ==========================================
+  await test('getInquiriesList returns empty list gracefully with 200 when database is offline', async () => {
+    const req = { query: {} };
+    const res = createMockRes();
+
+    await getInquiriesList(req, res, () => {});
+
+    if (res.statusCode !== 200) {
+      throw new Error(`Expected 200, got ${res.statusCode}`);
+    }
+    if (!res.data?.success) {
+      throw new Error('Expected data.success to be true');
+    }
+    if (!Array.isArray(res.data?.data?.inquiries) || res.data.data.inquiries.length !== 0) {
+      throw new Error('Expected data.inquiries to be empty array');
+    }
+  });
+
+  await test('updateInquiryStatus rejects invalid status with 400', async () => {
+    const req = {
+      params: { id: '60c72b2f9b1d8b2bad000001' },
+      body: { status: 'invalid_status_value' },
+      founder: { email: 'govind@example.com' },
+    };
+    const res = createMockRes();
+
+    await updateInquiryStatus(req, res, () => {});
+
+    if (res.statusCode !== 400) {
+      throw new Error(`Expected 400, got ${res.statusCode}`);
+    }
+    if (res.data?.success !== false) {
+      throw new Error('Expected data.success to be false');
+    }
+  });
+
+  await test('updateInquiryStatus returns 503 when database is offline', async () => {
+    const req = {
+      params: { id: '60c72b2f9b1d8b2bad000001' },
+      body: { status: 'contacted' },
+      founder: { email: 'govind@example.com' },
+    };
+    const res = createMockRes();
+
+    await updateInquiryStatus(req, res, () => {});
+
+    if (res.statusCode !== 503) {
+      throw new Error(`Expected 503, got ${res.statusCode}`);
+    }
+    if (res.data?.success !== false) {
+      throw new Error('Expected data.success to be false');
     }
   });
 

@@ -1,7 +1,12 @@
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
-import { createInquiry } from '../controllers/inquiryController.js';
+import {
+  createInquiry,
+  getInquiriesList,
+  updateInquiryStatus,
+} from '../controllers/inquiryController.js';
 import { validateInquiry } from '../middleware/validateInquiry.js';
+import { requireFounderAuth } from '../middleware/requireFounderAuth.js';
 
 const router = Router();
 
@@ -17,8 +22,12 @@ const inquiryRateLimiter = rateLimit({
   },
 });
 
-// POST /api/inquiries
+// 1. PUBLIC ROUTE: Submit new inquiry
 router.post('/', inquiryRateLimiter, validateInquiry, createInquiry);
+
+// 2. PROTECTED FOUNDER ROUTES: Manage inquiry feed & lead status
+router.get('/', requireFounderAuth, getInquiriesList);
+router.patch('/:id/status', requireFounderAuth, updateInquiryStatus);
 
 export default router;
 
