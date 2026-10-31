@@ -44,20 +44,29 @@ export const AGENCY_SERVICES = [
   {
     id: 'business-website-development',
     title: 'Business Website Development',
+    targetAudience: 'Small & Medium Businesses, Corporate Agencies, Local Services',
     shortDesc: 'Bespoke corporate websites engineered to represent your brand, captivate prospective clients, and convert visitors into measurable business inquiries.',
     fullDesc: 'We design and engineer bespoke corporate websites tailored to your company identity. Built with lightning-fast load times, SEO-friendly semantic markup, and mobile-first responsiveness, our business platforms convey authority and convert high-intent visitors.',
+    realWorldExample: 'A coaching institute, consulting firm, or healthcare provider requiring a mobile-friendly flagship site with course details, credentials, and direct WhatsApp / form booking.',
+    typicalDeliverables: [
+      'Custom UI/UX Design Tailored to Brand',
+      '100% Mobile, Tablet & Desktop Responsive Layouts',
+      'Search Engine Optimization & Google Meta Setup',
+      'Direct WhatsApp Chat & Inquiry Lead Capture',
+      'SSL Security, Fast CDN Hosting & Domain Linking',
+    ],
     iconName: 'Globe',
     keyFeatures: [
       'Custom responsive design across mobile, tablet, and ultra-wide displays',
       'Search engine optimized (SEO) architecture and structured metadata',
       'Performance-tuned core web vitals and sub-second load times',
       'Accessible, clean UI components built for intuitive navigation',
-      'Integrated contact mechanisms, lead capture, and analytics ready'
+      'Integrated contact mechanisms, lead capture, and analytics ready',
     ],
     businessBenefits: [
       'Establishes immediate credibility and brand authority with enterprise clients',
-      'Improves organic search rankings and local business discovery',
-      'Increases inquiry conversion rates with strategic call-to-actions'
+      'Improves organic search rankings and local business discovery on Google',
+      'Increases inquiry conversion rates with strategic call-to-actions and WhatsApp',
     ],
     technologies: ['React', 'JavaScript', 'Tailwind CSS', 'HTML5', 'CSS3'],
     popular: true,
@@ -65,20 +74,29 @@ export const AGENCY_SERVICES = [
   {
     id: 'ecommerce-development',
     title: 'E-commerce Website Development',
+    targetAudience: 'Retail Shops, Boutique Brands, Wholesalers, Direct-to-Consumer',
     shortDesc: 'Scalable online storefronts with seamless product catalogs, frictionless checkout flows, and secure transaction handling.',
     fullDesc: 'Empower your online retail operations with custom-crafted e-commerce storefronts. From complex product matrices and inventory tracking to secure payment gateways and one-click checkouts, we build shopping platforms that maximize average order value.',
+    realWorldExample: 'A retail clothing or electronics store expanding online with searchable product catalogs, customer cart, automated order notifications, and instant WhatsApp ordering.',
+    typicalDeliverables: [
+      'Interactive Product Catalog & Category Filters',
+      'Shopping Cart & Frictionless Checkout Flow',
+      'Payment Gateway Integration (Razorpay, Stripe, UPI, Cards)',
+      'Customer Accounts & Order Tracking Portal',
+      'Automated Order Notifications via Email & WhatsApp',
+    ],
     iconName: 'ShoppingBag',
     keyFeatures: [
       'Intuitive product catalog with dynamic filtering, sorting, and search',
       'Frictionless multi-step and single-page checkout flows',
       'Secure payment gateway integration (Stripe, PayPal, Razorpay)',
       'Customer account portals, order tracking, and wishlist management',
-      'Mobile-optimized shopping cart and responsive micro-interactions'
+      'Mobile-optimized shopping cart and responsive micro-interactions',
     ],
     businessBenefits: [
       'Reduces cart abandonment with rapid checkout experiences',
       'Scales seamlessly with seasonal traffic spikes and expanding SKUs',
-      'Protects customer transactions with modern security standards'
+      'Protects customer transactions with modern security standards',
     ],
     technologies: ['React', 'Node.js', 'Express.js', 'MongoDB', 'REST APIs'],
     popular: true,
@@ -86,20 +104,29 @@ export const AGENCY_SERVICES = [
   {
     id: 'custom-web-applications',
     title: 'Custom Web Application Development',
+    targetAudience: 'Startups, SaaS Founders, Operations Managers, Growing Enterprises',
     shortDesc: 'Tailored web software, interactive customer portals, and internal workflows engineered to solve unique business challenges.',
     fullDesc: 'Transform complex business logic into high-performance web applications. We build interactive SaaS applications, internal management portals, and client-facing digital tools that streamline operational efficiency.',
+    realWorldExample: 'A startup or logistics firm replacing messy spreadsheets with a secure cloud portal for team tracking, client reports, automated invoicing, and live analytics.',
+    typicalDeliverables: [
+      'Interactive Single Page Application (SPA) Interface',
+      'Role-Based User Authentication & Permissions',
+      'Real-Time Analytics Dashboards & Data Visualizations',
+      'Automated Document / Invoice PDF Generation',
+      'Secure Cloud Database Setup & API Connections',
+    ],
     iconName: 'LayoutGrid',
     keyFeatures: [
       'Modular Single Page Application (SPA) architecture',
       'Role-based access control (RBAC) and granular permission handling',
       'Real-time data synchronization and interactive dashboards',
       'Complex business workflow automation and custom reporting',
-      'Cross-browser compatibility and responsive data tables'
+      'Cross-browser compatibility and responsive data tables',
     ],
     businessBenefits: [
       'Eliminates manual bottlenecks by automating critical workflows',
       'Provides actionable data visibility to leadership in real time',
-      'Delivers tailored functionality that off-the-shelf software cannot match'
+      'Delivers tailored functionality that off-the-shelf software cannot match',
     ],
     technologies: ['React', 'Node.js', 'Express.js', 'MongoDB', 'REST APIs'],
     popular: true,
@@ -107,20 +134,29 @@ export const AGENCY_SERVICES = [
   {
     id: 'full-stack-development',
     title: 'Full Stack Development',
+    targetAudience: 'Funded Startups, Digital Products, Scaling Businesses',
     shortDesc: 'End-to-end development bridging intuitive client-side interfaces with robust server architectures and databases.',
     fullDesc: 'Comprehensive full-stack engineering utilizing modern JavaScript/TypeScript ecosystems. We architect seamless data flow from responsive React frontends through secure Express API services down to optimized MongoDB and MySQL databases.',
+    realWorldExample: 'An end-to-end digital booking or marketplace platform connecting customers with service providers, complete with payments, reviews, and admin dashboard.',
+    typicalDeliverables: [
+      'Front-to-Back End-to-End Architecture',
+      'Scalable Database Schema Modeling',
+      'Secure REST API Endpoints with Rate Limiting',
+      'Complete Codebase Repository with Documentation',
+      'Automated Production Deployment & CI/CD Setup',
+    ],
     iconName: 'Layers',
     keyFeatures: [
       'Cohesive architectural design connecting frontend and backend',
       'Scalable database schema modeling and query optimization',
       'Secure token and cookie-based session management',
       'RESTful API architecture adhering to industry standards',
-      'Continuous environment-based configuration and error logging'
+      'Continuous environment-based configuration and error logging',
     ],
     businessBenefits: [
       'Single point of engineering accountability for the entire tech stack',
       'Lower maintenance overhead through unified JavaScript stack conventions',
-      'Rapid iterative feature delivery and cohesive testing coverage'
+      'Rapid iterative feature delivery and cohesive testing coverage',
     ],
     technologies: ['React', 'Node.js', 'Express.js', 'MongoDB', 'MySQL'],
     popular: false,
@@ -128,20 +164,29 @@ export const AGENCY_SERVICES = [
   {
     id: 'ui-ux-design',
     title: 'UI/UX Design',
+    targetAudience: 'Product Founders, Website Owners, Apps Needing Modernization',
     shortDesc: 'User-centered digital design combining aesthetic elegance with functional usability, high conversion rates, and accessibility.',
     fullDesc: 'Great software starts with empathetic design. We produce high-fidelity wireframes, interactive component design systems, and responsive user journeys that ensure your digital product is as effortless to use as it is stunning to look at.',
+    realWorldExample: 'Transforming an outdated, cluttered web interface into a sleek, dark-mode or clean modern experience that doubles visitor time-on-site.',
+    typicalDeliverables: [
+      'Figma High-Fidelity UI Mockups & Wireframes',
+      'Interactive Clickable Prototypes',
+      'Design System with Colors, Typography & Components',
+      'Mobile & Desktop Viewport Specifications',
+      'Developer-Ready Asset Handoff',
+    ],
     iconName: 'Palette',
     keyFeatures: [
       'Interactive wireframing and user journey mapping',
       'Comprehensive design systems with reusable atomic tokens',
       'WCAG accessibility compliance (high contrast, readable typography)',
       'Subtle motion design and meaningful micro-interactions',
-      'High-fidelity desktop, tablet, and mobile interface design'
+      'High-fidelity desktop, tablet, and mobile interface design',
     ],
     businessBenefits: [
       'Elevates brand perception and positions your business as a market leader',
       'Reduces user confusion and decreases customer support requests',
-      'Accelerates frontend engineering with clear design tokens and specs'
+      'Accelerates frontend engineering with clear design tokens and specs',
     ],
     technologies: ['Figma', 'Tailwind CSS', 'CSS3', 'Responsive Design'],
     popular: false,
@@ -149,20 +194,29 @@ export const AGENCY_SERVICES = [
   {
     id: 'api-development-integration',
     title: 'API Development & Integration',
+    targetAudience: 'Software Teams, E-commerce Stores, Businesses with Multiple Tools',
     shortDesc: 'Secure, documented RESTful APIs and third-party service connections powering modern connected ecosystems.',
     fullDesc: 'Connect your software with external services or build robust APIs for web and mobile clients. We develop clean, well-documented REST APIs with authentication, rate limiting, and structured JSON payloads.',
+    realWorldExample: 'Connecting an online website to a CRM, payment gateway, WhatsApp notification system, or external inventory database.',
+    typicalDeliverables: [
+      'Secure REST API Endpoints with JSON Contracts',
+      'Third-Party Payment & Messaging Webhooks',
+      'Interactive Swagger / Postman Documentation',
+      'Input Validation & Token-Based Authentication',
+      'Rate Limiting & Protection Against Abuse',
+    ],
     iconName: 'Cpu',
     keyFeatures: [
       'RESTful endpoint design with standard HTTP status codes and semantics',
       'Secure authentication via JWT, API keys, or session cookies',
       'Third-party integrations (payment gateways, CRM, messaging, email)',
       'Granular request rate limiting, input sanitization, and CORS controls',
-      'Predictable JSON error contracts and interactive API documentation'
+      'Predictable JSON error contracts and interactive API documentation',
     ],
     businessBenefits: [
       'Enables seamless data exchange between your internal and external systems',
       'Safeguards sensitive backend databases from direct exposure',
-      'Future-proofs your digital assets for mobile apps and partner syndication'
+      'Future-proofs your digital assets for mobile apps and partner syndication',
     ],
     technologies: ['Node.js', 'Express.js', 'REST APIs', 'Postman', 'JSON'],
     popular: false,
@@ -170,20 +224,29 @@ export const AGENCY_SERVICES = [
   {
     id: 'website-redesign-optimization',
     title: 'Website Redesign & Optimization',
+    targetAudience: 'Businesses with Slow, Outdated, or Non-Converting Websites',
     shortDesc: 'Revitalize outdated websites with modern aesthetics, elevated speed metrics, SEO enhancements, and conversion improvements.',
     fullDesc: 'Is your current website lagging behind your competitors? We revitalize legacy sites by rewriting outdated code, modernizing design elements, optimizing asset delivery, and restructuring content hierarchies to revitalize search engine performance.',
+    realWorldExample: 'Upgrading a slow, 5-year-old WordPress website to a modern, sub-second React platform that ranks higher on Google and looks exceptional on smartphones.',
+    typicalDeliverables: [
+      'Complete Code & Performance Audit Report',
+      'Modern Visual Refresh & Responsive Rebuilding',
+      'Core Web Vitals Optimization (Sub-Second Load Times)',
+      'SEO Preservation & 301 Redirect Mapping',
+      'New Lead Generation Forms & WhatsApp CTAs',
+    ],
     iconName: 'Sparkles',
     keyFeatures: [
       'Core Web Vitals audit and performance optimization',
       'Modern code refactoring removing bloated legacy dependencies',
       'Mobile responsiveness overhaul and touch target optimization',
       'Search engine URL redirect strategy preserving existing authority',
-      'Refined typographic scale and high-contrast color balancing'
+      'Refined typographic scale and high-contrast color balancing',
     ],
     businessBenefits: [
       'Prevents visitor bounce rates caused by slow page loads',
       'Recovers lost organic search traffic and search engine rankings',
-      'Modernizes brand image without losing valuable legacy content'
+      'Modernizes brand image without losing valuable legacy content',
     ],
     technologies: ['React', 'JavaScript', 'Tailwind CSS', 'Lighthouse', 'Vite'],
     popular: false,
@@ -191,23 +254,144 @@ export const AGENCY_SERVICES = [
   {
     id: 'website-maintenance-support',
     title: 'Website Maintenance & Support',
+    targetAudience: 'Active Websites, Busy Business Owners, E-commerce Stores',
     shortDesc: 'Proactive monitoring, security patching, dependency upgrades, and ongoing technical support keeping your systems online.',
     fullDesc: 'Keep your digital flagship secure, updated, and operating without disruption. Our maintenance service covers proactive security audits, dependency updates, uptime monitoring, performance checks, and rapid bug resolution.',
+    realWorldExample: 'A monthly retainer where we handle backups, update banners and products, monitor 99.9% uptime, and resolve any urgent technical bugs within hours.',
+    typicalDeliverables: [
+      'Regular Cloud Backups & Disaster Recovery Guard',
+      'Security Patching & Dependency Upgrades',
+      '24/7 Uptime & Error Log Monitoring',
+      'Content Updates, Banner Swaps & Page Tweaks',
+      'Priority Founder Support via WhatsApp / Email',
+    ],
     iconName: 'ShieldCheck',
     keyFeatures: [
       'Scheduled dependency updates and security patch management',
       'Proactive uptime and error log monitoring',
       'Database backups and disaster recovery planning',
       'Cross-browser and device compatibility regression checks',
-      'Dedicated technical support channel for urgent fixes'
+      'Dedicated technical support channel for urgent fixes',
     ],
     businessBenefits: [
       'Prevents costly business downtime and revenue loss',
       'Protects your business reputation against security vulnerabilities',
-      'Frees your internal team to focus on core operations, not server bugs'
+      'Frees your internal team to focus on core operations, not server bugs',
     ],
     technologies: ['Git', 'GitHub', 'Node.js', 'MongoDB', 'Vite'],
     popular: false,
+  },
+];
+
+export const AGENCY_INDUSTRIES = [
+  {
+    id: 'restaurants-hospitality',
+    title: 'Restaurants, Cafes & Hotels',
+    tag: 'Food & Hospitality',
+    iconName: 'UtensilsCrossed',
+    desc: 'Interactive digital QR menus, Google Maps discovery, table reservation inquiries, and instant WhatsApp food orders that boost direct revenue.',
+    benefits: ['Mobile QR Menu Catalog', 'Table Booking Inquiries', 'Local SEO & Maps Ranking', 'Direct WhatsApp Orders'],
+  },
+  {
+    id: 'education-coaching',
+    title: 'Coaching & Tuition Institutes',
+    tag: 'Education & Training',
+    iconName: 'GraduationCap',
+    desc: 'Structured course directories, batch schedules, syllabus download triggers, and direct admission inquiry forms designed to convert parents and students.',
+    benefits: ['Course & Fee Details', 'Student Inquiry Forms', 'Batch Timetable Displays', 'Instant WhatsApp Consultation'],
+  },
+  {
+    id: 'retail-local-business',
+    title: 'Retail Shops & Local Stores',
+    tag: 'Retail & Commerce',
+    iconName: 'Store',
+    desc: 'Showcase physical store inventory online, attract nearby shoppers with local Google SEO, and accept inquiries and orders directly on WhatsApp.',
+    benefits: ['Digital Product Showcase', 'Google Local Map Visibility', 'Promotional Offer Banners', 'One-Click WhatsApp Orders'],
+  },
+  {
+    id: 'startups-entrepreneurs',
+    title: 'Startups & Entrepreneurs',
+    tag: 'Tech & Innovation',
+    iconName: 'Rocket',
+    desc: 'Rapid MVP prototyping, responsive SaaS web applications, founder telemetry dashboards, and scalable database backends built for product-market fit.',
+    benefits: ['Rapid MVP Turnaround', 'Secure User Authentication', 'Custom RESTful APIs', 'Real-Time Analytics'],
+  },
+  {
+    id: 'professionals-services',
+    title: 'Doctors, Lawyers & Consultants',
+    tag: 'Professional Services',
+    iconName: 'Briefcase',
+    desc: 'Authoritative personal & firm profiles, appointment booking request forms, client case studies, and credential verification that build immediate trust.',
+    benefits: ['High-Trust Brand Presence', 'Appointment Request Forms', 'Verified Credentials Display', 'Mobile-First Accessibility'],
+  },
+  {
+    id: 'corporate-enterprises',
+    title: 'Corporate & Growing Businesses',
+    tag: 'Enterprise & B2B',
+    iconName: 'Building2',
+    desc: 'Multi-page digital flagships, service matrices, corporate governance hubs, career portals, and high-volume inquiry pipelines.',
+    benefits: ['Brand Authority Design', 'Custom RESTful APIs', 'Role-Based Access Control', 'Dedicated Maintenance Retainer'],
+  },
+];
+
+export const AGENCY_FAQS = [
+  {
+    id: 'faq-1',
+    question: 'How much does a website development project cost?',
+    answer: 'We provide transparent, milestone-based pricing without hidden fees or surprise invoices. A clean corporate starter website differs in scope from a custom web application or multi-vendor store. Before kickoff, we provide an exact, itemized scope and fixed quotation based strictly on your project specifications.',
+  },
+  {
+    id: 'faq-2',
+    question: 'How long will it take to build and launch my website?',
+    answer: 'Most standard business websites are fully designed, developed, and launched within 1 to 2 weeks. Custom web applications, e-commerce storefronts, or platforms with complex third-party integrations typically take 3 to 5 weeks depending on requirements.',
+  },
+  {
+    id: 'faq-3',
+    question: 'Will my website work smoothly on mobile phones and tablets?',
+    answer: 'Yes, 100%. We engineer every platform with a mobile-first philosophy. Your site is thoroughly tested on smartphones, iPads, laptops, and ultra-wide desktop monitors to ensure sub-second page speed, readable typography, and intuitive touch navigation.',
+  },
+  {
+    id: 'faq-4',
+    question: 'Will my business be easily found on Google and search engines?',
+    answer: 'Yes. Every project includes search engine optimization (SEO) fundamentals: semantic HTML5 markup, custom meta tags, OpenGraph social sharing cards, fast Core Web Vitals performance, XML sitemap generation, and Google Search Console indexing setup.',
+  },
+  {
+    id: 'faq-5',
+    question: 'Who owns the website source code and assets after completion?',
+    answer: 'You own 100% of the code, design, and digital assets. Upon final project completion, we transfer the full GitHub repository, hosting controls, and production credentials directly to you with zero vendor lock-in.',
+  },
+  {
+    id: 'faq-6',
+    question: 'Can prospective customers contact me directly on WhatsApp?',
+    answer: 'Yes! We configure smart WhatsApp integration across your site. When a visitor clicks the WhatsApp button, their message automatically includes the specific service or project they are viewing, enabling you to reply and close deals immediately.',
+  },
+  {
+    id: 'faq-7',
+    question: 'Do you offer ongoing website maintenance and technical support?',
+    answer: 'Yes, we provide flexible ongoing maintenance packages. Our support covers scheduled dependency updates, regular database backups, 24/7 uptime monitoring, security patching, and content updates so your website continues operating without disruption.',
+  },
+];
+
+export const AGENCY_TRUST_GUARANTEES = [
+  {
+    title: 'Direct Founder Collaboration',
+    desc: 'You work directly with Govind Rathod and the agency co-founders. No junior account managers or communication silos.',
+    iconName: 'Target',
+  },
+  {
+    title: 'Milestone-Based Payment Security',
+    desc: 'Projects are structured into clear, agreed milestones. You review working demonstrations before releasing phase payments.',
+    iconName: 'ShieldCheck',
+  },
+  {
+    title: 'Sub-Second Speed Guarantee',
+    desc: 'Lightweight React + Tailwind architecture engineered for pristine Core Web Vitals and lightning-fast load times.',
+    iconName: 'Zap',
+  },
+  {
+    title: '100% Intellectual Property Ownership',
+    desc: 'Zero proprietary lock-in. Full GitHub source code access and cloud credentials are transferred directly to you.',
+    iconName: 'Code',
   },
 ];
 

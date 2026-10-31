@@ -12,6 +12,11 @@ import {
   User,
   Layers,
   ArrowUpRight,
+  MessageCircle,
+  ChevronDown,
+  HelpCircle,
+  Check,
+  Zap,
 } from 'lucide-react';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import SectionHeading from '../components/common/SectionHeading';
@@ -26,14 +31,24 @@ import {
   AGENCY_WHY_CHOOSE_US,
   AGENCY_TECHNOLOGIES,
   AGENCY_FOUNDERS,
+  AGENCY_INDUSTRIES,
+  AGENCY_FAQS,
+  AGENCY_TRUST_GUARANTEES,
+  COMPANY_CONFIG,
+  getWhatsAppInquiryUrl,
 } from '../utils/agencyData';
 
 export default function HomePage() {
-  useDocumentTitle('Professional Web Development & Digital Solutions Agency');
+  useDocumentTitle('Govind Web Solutions | High-Performance Web Development Agency');
   const [selectedProject, setSelectedProject] = useState(null);
+  const [openFaq, setOpenFaq] = useState(null);
 
   const featuredServices = AGENCY_SERVICES.slice(0, 6);
   const featuredProjects = AGENCY_PROJECTS.filter((p) => p.featured);
+
+  const toggleFaq = (id) => {
+    setOpenFaq((prev) => (prev === id ? null : id));
+  };
 
   return (
     <div className="relative">
@@ -48,51 +63,59 @@ export default function HomePage() {
             <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
               <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-navy-900 border border-navy-750 text-brand-accent text-xs font-semibold tracking-wide shadow-sm">
                 <Sparkles className="w-3.5 h-3.5 text-brand-accent" />
-                <span>Web Development & Digital Solutions Agency</span>
+                <span>Professional Web Development & Digital Solutions</span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
-                Building Digital Experiences That{' '}
+                High-Performance Websites & Web Apps That{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-brand-accent to-cyan-400">
-                  Drive Your Business Forward.
+                  Drive Real Paying Clients.
                 </span>
               </h1>
 
               <p className="text-lg sm:text-xl text-slate-300 font-normal max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                We help businesses transform ideas into powerful digital experiences through modern websites, e-commerce solutions, and custom web applications.
+                We engineer modern business websites, e-commerce storefronts, and custom software for restaurants, coaching institutes, retail shops, and startups — built for sub-second speed, Google discoverability, and measurable inquiries.
               </p>
 
-              {/* CTAs */}
+              {/* High-Converting Dual CTAs */}
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
                 <Link
                   to="/contact"
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-brand-primary hover:bg-brand-secondary text-white font-semibold text-base shadow-lg shadow-brand-primary/25 hover:shadow-xl hover:shadow-brand-primary/35 transition-all active:scale-98"
                 >
-                  <span>Let's Discuss Your Project</span>
+                  <span>Get a Free Consultation</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link
-                  to="/projects"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-navy-900 hover:bg-navy-850 text-slate-200 hover:text-white font-semibold text-base border border-navy-750 transition-colors"
+                <a
+                  href={getWhatsAppInquiryUrl({
+                    context: 'I would like to consult with Govind Web Solutions regarding a new website development project.',
+                  })}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-base shadow-lg shadow-emerald-900/30 transition-all active:scale-98"
                 >
-                  <span>Explore Our Work</span>
-                  <ChevronRight className="w-4 h-4 text-slate-400" />
-                </Link>
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Chat on WhatsApp</span>
+                </a>
               </div>
 
               {/* Quick highlights */}
               <div className="pt-6 border-t border-navy-850 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-300">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  <span>Modern Full-Stack Architecture</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  <span>Sub-Second Page Speed</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                   <span>Direct Founder Collaboration</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <span>Sub-Second Page Speeds</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <span>100% Code Ownership</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <span>WhatsApp Lead Integration</span>
                 </div>
               </div>
             </div>
@@ -124,9 +147,12 @@ export default function HomePage() {
                   <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-brand-accent flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
                     <DynamicIcon name={service.iconName} className="w-6 h-6" />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-brand-accent transition-colors">
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-brand-accent transition-colors">
                     {service.title}
                   </h3>
+                  <span className="text-[11px] font-semibold text-slate-400 block mb-3">
+                    For: {service.targetAudience}
+                  </span>
                   <p className="text-sm text-slate-300 leading-relaxed mb-6">
                     {service.shortDesc}
                   </p>
@@ -144,13 +170,25 @@ export default function HomePage() {
                     ))}
                   </div>
 
-                  <Link
-                    to={`/services#${service.id}`}
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-brand-accent group-hover:text-white transition-colors"
-                  >
-                    <span>Learn More & Details</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
+                  <div className="flex items-center justify-between pt-4 border-t border-navy-850">
+                    <Link
+                      to={`/services#${service.id}`}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-accent group-hover:text-white transition-colors"
+                    >
+                      <span>Learn More</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                    <a
+                      href={getWhatsAppInquiryUrl({ service: service.title })}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
+                      title="Quick WhatsApp Discussion"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" />
+                      <span>WhatsApp</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}
@@ -168,8 +206,82 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. FEATURED PROJECTS SECTION */}
+      {/* 3. INDUSTRIES WE SERVE SECTION (NEW) */}
       <section className="py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeading
+            badge="Target Sectors"
+            title="Tailored Digital Solutions for Your Industry"
+            subtitle="We understand that a restaurant, a coaching class, and a retail store each have unique commercial workflows. We build solutions designed specifically for your industry's customer journey."
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {AGENCY_INDUSTRIES.map((ind) => (
+              <div
+                key={ind.id}
+                className="p-8 rounded-3xl bg-navy-900/80 border border-navy-800 hover:border-brand-primary/40 transition-all duration-300 flex flex-col justify-between group shadow-lg"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-brand-accent flex items-center justify-center group-hover:scale-110 group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
+                      <DynamicIcon name={ind.iconName} className="w-6 h-6" />
+                    </div>
+                    <span className="text-[10px] uppercase tracking-wider font-bold px-2.5 py-1 rounded-full bg-navy-950 text-brand-accent border border-navy-750">
+                      {ind.tag}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-brand-accent transition-colors">
+                    {ind.title}
+                  </h3>
+                  <p className="text-sm text-slate-300 leading-relaxed mb-6">
+                    {ind.desc}
+                  </p>
+
+                  <div className="space-y-2 mb-6">
+                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
+                      Core Business Features:
+                    </span>
+                    <ul className="grid grid-cols-1 gap-1.5">
+                      {ind.benefits.map((b, bIdx) => (
+                        <li key={bIdx} className="flex items-center gap-2 text-xs text-slate-300">
+                          <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-navy-850 flex items-center justify-between">
+                  <Link
+                    to={`/contact?service=${encodeURIComponent(ind.title)}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-accent group-hover:text-white transition-colors"
+                  >
+                    <span>Discuss Industry Project</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                  <a
+                    href={getWhatsAppInquiryUrl({
+                      service: ind.title,
+                      context: `I run a business in the ${ind.tag} sector and want to discuss digital solutions.`,
+                    })}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-emerald-400 hover:text-emerald-300 transition-colors p-1"
+                    title="Quick WhatsApp Chat"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. FEATURED PROJECTS SECTION */}
+      <section className="py-20 lg:py-28 bg-navy-900/40 border-t border-b border-navy-800/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16 gap-6">
             <div>
@@ -269,8 +381,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. WHY CHOOSE US SECTION */}
-      <section className="py-20 bg-navy-900/40 border-t border-b border-navy-800/80">
+      {/* 5. WHY CHOOSE US & TRUST GUARANTEES SECTION */}
+      <section className="py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="The Agency Advantage"
@@ -278,7 +390,7 @@ export default function HomePage() {
             subtitle="We combine software craftsmanship with genuine business acumen to build platforms that deliver measurable commercial value."
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {AGENCY_WHY_CHOOSE_US.map((item, idx) => (
               <div
                 key={idx}
@@ -292,11 +404,38 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+
+          {/* Delivery & Client Trust Commitment Banner */}
+          <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-navy-900 via-navy-850 to-navy-900 border border-navy-750 shadow-2xl">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-xs font-bold uppercase tracking-wider text-brand-accent">
+                Our Guarantee
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white mt-2 mb-3">
+                Built On Transparency & Accountability
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300">
+                We eliminate the typical frustrations of hiring web agencies through direct founder responsibility and milestones.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {AGENCY_TRUST_GUARANTEES.map((g, idx) => (
+                <div key={idx} className="p-5 rounded-2xl bg-navy-950/70 border border-navy-800 space-y-2">
+                  <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-3">
+                    <DynamicIcon name={g.iconName} className="w-5 h-5" />
+                  </div>
+                  <h4 className="text-sm font-bold text-white">{g.title}</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">{g.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* 5. OUR PROCESS ROADMAP */}
-      <section className="py-20 lg:py-28">
+      {/* 6. OUR PROCESS ROADMAP */}
+      <section className="py-20 bg-navy-900/40 border-t border-b border-navy-800/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="Methodology"
@@ -321,8 +460,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. TECHNOLOGIES GRID */}
-      <section className="py-20 bg-navy-900/40 border-t border-b border-navy-800/80">
+      {/* 7. TECHNOLOGIES GRID */}
+      <section className="py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="Demonstrated Capabilities"
@@ -353,8 +492,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. TEAM PREVIEW SECTION */}
-      <section className="py-20 lg:py-28">
+      {/* 8. TEAM PREVIEW SECTION */}
+      <section className="py-20 bg-navy-900/40 border-t border-b border-navy-800/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16 gap-6">
             <div>
@@ -435,7 +574,74 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 8. FINAL CTA SECTION */}
+      {/* 9. FREQUENTLY ASKED QUESTIONS (FAQ) SECTION (NEW) */}
+      <section className="py-20 lg:py-28">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeading
+            badge="Common Inquiries"
+            title="Frequently Asked Questions"
+            subtitle="Straight answers to the most common questions business owners ask before starting a website development project."
+          />
+
+          <div className="space-y-4 mb-12">
+            {AGENCY_FAQS.map((faq) => {
+              const isOpen = openFaq === faq.id;
+              return (
+                <div
+                  key={faq.id}
+                  className="rounded-2xl bg-navy-900/80 border border-navy-800 overflow-hidden transition-all duration-200 hover:border-navy-750"
+                >
+                  <button
+                    onClick={() => toggleFaq(faq.id)}
+                    className="w-full p-6 text-left flex items-center justify-between gap-4 focus:outline-none"
+                    aria-expanded={isOpen}
+                  >
+                    <span className="text-base font-bold text-white leading-snug">
+                      {faq.question}
+                    </span>
+                    <span
+                      className={`p-2 rounded-xl bg-navy-850 text-brand-accent transition-transform duration-200 shrink-0 ${
+                        isOpen ? 'rotate-180 bg-brand-primary text-white' : ''
+                      }`}
+                    >
+                      <ChevronDown className="w-4 h-4" />
+                    </span>
+                  </button>
+
+                  {isOpen && (
+                    <div className="px-6 pb-6 pt-1 text-sm text-slate-300 leading-relaxed border-t border-navy-850">
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Quick FAQ WhatsApp Banner */}
+          <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-navy-900 to-navy-900 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-center sm:text-left">
+            <div>
+              <h4 className="text-sm font-bold text-white">Have a specific question about your project?</h4>
+              <p className="text-xs text-slate-300 mt-0.5">
+                Our founders reply directly on WhatsApp — no sales reps, no delay.
+              </p>
+            </div>
+            <a
+              href={getWhatsAppInquiryUrl({
+                context: 'I have a specific question about starting a website project.',
+              })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-colors shrink-0 shadow-md shadow-emerald-900/30"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Ask on WhatsApp ({COMPANY_CONFIG.phoneDisplay})</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 10. FINAL HIGH-CONVERTING CTA SECTION */}
       <section className="py-20 bg-gradient-to-b from-navy-900/60 to-navy-950 border-t border-navy-800/80">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="p-10 sm:p-14 rounded-3xl bg-gradient-to-r from-navy-900 via-navy-850 to-navy-900 border border-navy-750 shadow-2xl relative overflow-hidden">
@@ -443,15 +649,15 @@ export default function HomePage() {
 
             <div className="relative z-10 max-w-2xl mx-auto space-y-6">
               <span className="inline-block px-3.5 py-1 rounded-full bg-blue-500/10 text-brand-accent text-xs font-bold uppercase tracking-wider border border-blue-500/20">
-                Kickstart Your Vision
+                Kickstart Your Growth
               </span>
 
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                Have a Project in Mind? Let's Build Something Exceptional Together.
+                Ready to Build a Website That Generates Real Inquiries?
               </h2>
 
               <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-                Whether you need a new bespoke corporate website, an e-commerce platform, or a custom full-stack web application, our founders are ready to consult on your requirements.
+                Whether you need a new corporate website, an online storefront, or custom software for your business, Govind Rathod and the agency founders are ready to consult on your requirements.
               </p>
 
               <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -459,15 +665,20 @@ export default function HomePage() {
                   to="/contact"
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-brand-primary hover:bg-brand-secondary text-white font-semibold text-base shadow-lg shadow-brand-primary/30 transition-all active:scale-98"
                 >
-                  <span>Contact Our Team</span>
+                  <span>Submit Project Scope</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link
-                  to="/services"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-navy-950 hover:bg-navy-800 text-slate-200 hover:text-white font-semibold text-base border border-navy-750 transition-colors"
+                <a
+                  href={getWhatsAppInquiryUrl({
+                    context: 'Hi Govind Web Solutions! I am ready to start my project and would like to discuss next steps.',
+                  })}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-base shadow-lg shadow-emerald-900/30 transition-all active:scale-98"
                 >
-                  <span>View Services Catalog</span>
-                </Link>
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Chat on WhatsApp</span>
+                </a>
               </div>
             </div>
           </div>

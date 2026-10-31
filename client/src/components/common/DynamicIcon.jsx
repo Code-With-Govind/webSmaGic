@@ -15,6 +15,13 @@ import {
   HelpCircle,
   FileCheck,
   Zap,
+  UtensilsCrossed,
+  GraduationCap,
+  Store,
+  Rocket,
+  Briefcase,
+  Building2,
+  ChevronDown,
 } from 'lucide-react';
 
 const iconMap = {
@@ -33,6 +40,13 @@ const iconMap = {
   HelpCircle,
   FileCheck,
   Zap,
+  UtensilsCrossed,
+  GraduationCap,
+  Store,
+  Rocket,
+  Briefcase,
+  Building2,
+  ChevronDown,
 };
 
 export default function DynamicIcon({ name, className = 'w-5 h-5', ...props }) {
