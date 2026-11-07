@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './api';
+import { API_BASE_URL, setAuthToken, getAuthHeaders } from './api';
 
 export const authService = {
   /**
@@ -25,6 +25,10 @@ export const authService = {
       throw error;
     }
 
+    if (data?.data?.token) {
+      setAuthToken(data.data.token);
+    }
+
     return data;
   },
 
@@ -32,6 +36,7 @@ export const authService = {
    * Terminate founder session
    */
   async logout() {
+    setAuthToken(null);
     try {
       const res = await fetch(`${API_BASE_URL}/auth/logout`, {
         method: 'POST',
@@ -49,7 +54,10 @@ export const authService = {
    */
   async getMe() {
     const res = await fetch(`${API_BASE_URL}/auth/me`, {
-      headers: { Accept: 'application/json' },
+      headers: {
+        Accept: 'application/json',
+        ...getAuthHeaders(),
+      },
       credentials: 'include',
     });
 

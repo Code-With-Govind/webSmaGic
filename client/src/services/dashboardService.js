@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './api';
+import { API_BASE_URL, getAuthHeaders } from './api';
 
 export const dashboardService = {
   /**
@@ -9,6 +9,7 @@ export const dashboardService = {
     const fetchOptions = {
       headers: {
         Accept: 'application/json',
+        ...getAuthHeaders(),
       },
       credentials: 'include', // Transmit HTTP-only founder session cookie
     };

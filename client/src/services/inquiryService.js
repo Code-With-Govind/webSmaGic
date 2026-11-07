@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './api';
+import { API_BASE_URL, getAuthHeaders } from './api';
 
 /**
  * Service to handle customer inquiries
@@ -78,7 +78,10 @@ export const inquiryService = {
     const queryString = params.toString() ? `?${params.toString()}` : '';
 
     const response = await fetch(`${API_BASE_URL}/inquiries${queryString}`, {
-      headers: { Accept: 'application/json' },
+      headers: {
+        Accept: 'application/json',
+        ...getAuthHeaders(),
+      },
       credentials: 'include', // Transmit HTTP-only founder token cookie
     });
 
@@ -105,6 +108,7 @@ export const inquiryService = {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
+        ...getAuthHeaders(),
       },
       credentials: 'include',
       body: JSON.stringify({ status }),

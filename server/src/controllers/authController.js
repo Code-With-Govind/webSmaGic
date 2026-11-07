@@ -48,6 +48,7 @@ export const login = async (req, res, next) => {
 
       return sendSuccess(res, 200, 'Founder authentication successful.', {
         founder: payload,
+        token,
       });
     } else {
       // Offline fallback: Check against env variables
@@ -82,6 +83,7 @@ export const login = async (req, res, next) => {
 
       return sendSuccess(res, 200, 'Founder authentication successful.', {
         founder: matchedFounder,
+        token,
       });
     }
   } catch (error) {
