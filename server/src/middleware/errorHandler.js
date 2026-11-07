@@ -25,6 +25,11 @@ export const errorHandler = (err, req, res, next) => {
     return sendError(res, 413, 'Request payload too large. Maximum allowed size is 10KB.');
   }
 
+  // CORS Policy Rejection
+  if (err.message && err.message.startsWith('Blocked by CORS policy')) {
+    return sendError(res, 403, err.message);
+  }
+
   // Generic internal server error (never leak internal stack trace in production)
   const statusCode = err.statusCode || 500;
   const message =

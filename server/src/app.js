@@ -38,7 +38,21 @@ app.use(
       if (process.env.NODE_ENV === 'development') {
         return callback(null, true);
       }
-      if (allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+
+      let isAllowed = false;
+      try {
+        const parsedUrl = new URL(origin);
+        isAllowed =
+          allowedOrigins.includes(origin) ||
+          allowedOrigins.includes('*') ||
+          parsedUrl.hostname === 'localhost' ||
+          parsedUrl.hostname.endsWith('.vercel.app') ||
+          parsedUrl.hostname === 'govindwebsolutions.com';
+      } catch {
+        isAllowed = false;
+      }
+
+      if (isAllowed) {
         return callback(null, true);
       }
       return callback(new Error(`Blocked by CORS policy: Origin ${origin} is not allowed`));
