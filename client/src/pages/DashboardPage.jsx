@@ -329,7 +329,7 @@ export default function DashboardPage() {
                     <Users className="w-4 h-4 text-brand-accent" />
                   </div>
                   <div className="text-3xl font-extrabold text-white">
-                    {overview.totalVisitors.toLocaleString()}
+                    {Number(overview?.totalVisitors || 0).toLocaleString()}
                   </div>
                   <div className="text-[11px] text-slate-400">
                     Calculated over selected {period === '7d' ? '7 days' : period === '30d' ? '30 days' : '90 days'}
@@ -343,10 +343,10 @@ export default function DashboardPage() {
                     <Eye className="w-4 h-4 text-cyan-400" />
                   </div>
                   <div className="text-3xl font-extrabold text-white">
-                    {overview.totalPageViews.toLocaleString()}
+                    {Number(overview?.totalPageViews || 0).toLocaleString()}
                   </div>
                   <div className="text-[11px] text-slate-400">
-                    {overview.totalSessions} distinct sessions logged
+                    {overview?.totalSessions ?? 0} distinct sessions logged
                   </div>
                 </div>
 
@@ -357,7 +357,7 @@ export default function DashboardPage() {
                     <MessageSquare className="w-4 h-4 text-emerald-400" />
                   </div>
                   <div className="text-3xl font-extrabold text-white">
-                    {overview.totalInquiries.toLocaleString()}
+                    {Number(overview?.totalInquiries || 0).toLocaleString()}
                   </div>
                   <div className="text-[11px] text-emerald-400 flex items-center gap-1">
                     <span>{inquiries.byStatus?.new || 0} pending review</span>
@@ -403,12 +403,12 @@ export default function DashboardPage() {
                       <AreaChart data={traffic} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                         <defs>
                           <linearGradient id="viewsGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stop-color="#3b82f6" stopOpacity={0.4} />
-                            <stop offset="95%" stop-color="#3b82f6" stopOpacity={0.0} />
+                            <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4} />
+                            <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.0} />
                           </linearGradient>
                           <linearGradient id="visitorsGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stop-color="#06b6d4" stopOpacity={0.4} />
-                            <stop offset="95%" stop-color="#06b6d4" stopOpacity={0.0} />
+                            <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.4} />
+                            <stop offset="95%" stopColor="#06b6d4" stopOpacity={0.0} />
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#1c2541" />
@@ -417,7 +417,7 @@ export default function DashboardPage() {
                           stroke="#64748b"
                           fontSize={11}
                           tickLine={false}
-                          tickFormatter={(str) => str.slice(5)}
+                          tickFormatter={(str) => (typeof str === 'string' && str.length >= 5 ? str.slice(5) : str || '')}
                         />
                         <YAxis stroke="#64748b" fontSize={11} tickLine={false} allowDecimals={false} />
                         <Tooltip
@@ -744,11 +744,13 @@ export default function DashboardPage() {
 
                             {/* Submission Date */}
                             <td className="py-3.5 px-4 text-slate-400 text-[11px] whitespace-nowrap">
-                              {new Date(inq.createdAt).toLocaleDateString('en-US', {
-                                month: 'short',
-                                day: 'numeric',
-                                year: 'numeric',
-                              })}
+                              {inq.createdAt
+                                ? new Date(inq.createdAt).toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric',
+                                  })
+                                : 'Recent'}
                             </td>
 
                             {/* Live Status Selector */}
