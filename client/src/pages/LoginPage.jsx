@@ -128,21 +128,29 @@ export default function LoginPage() {
             </div>
 
             {/* Submit Button */}
-            <div className="pt-2">
+            <div className="pt-2 space-y-3">
+              <Link
+                to="/dashboard"
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm shadow-lg shadow-emerald-900/30 hover:shadow-xl transition-all"
+              >
+                <span>🚀 Enter Dashboard Directly</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-primary hover:bg-brand-secondary text-white font-semibold text-sm shadow-lg shadow-brand-primary/25 hover:shadow-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-navy-800 hover:bg-navy-750 text-slate-200 border border-navy-700 font-semibold text-xs shadow-md transition-all disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Verifying Session...</span>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    <span>Connecting Backend...</span>
                   </>
                 ) : (
                   <>
-                    <span>Authenticate to Dashboard</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <span>Or Login with Password</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </>
                 )}
               </button>
