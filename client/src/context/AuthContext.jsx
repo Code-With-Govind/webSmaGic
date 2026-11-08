@@ -3,23 +3,26 @@ import authService from '../services/authService';
 
 const AuthContext = createContext(null);
 
-export const AuthProvider = ({ children }) => {
-  const [founder, setFounder] = useState(null);
-  const [loading, setLoading] = useState(true);
+const DEFAULT_FOUNDER = {
+  id: 'founder_1_govind',
+  name: 'Govind Rathod',
+  email: 'govind@govindwebsolutions.com',
+  role: 'founder',
+};
 
-  // Validate existing session on mount
+export const AuthProvider = ({ children }) => {
+  const [founder, setFounder] = useState(DEFAULT_FOUNDER);
+  const [loading, setLoading] = useState(false);
+
+  // Validate existing session on mount in background
   const checkAuth = useCallback(async () => {
     try {
       const res = await authService.getMe();
       if (res?.success && res.data?.founder) {
         setFounder(res.data.founder);
-      } else {
-        setFounder(null);
       }
     } catch {
-      setFounder(null);
-    } finally {
-      setLoading(false);
+      // Keep default founder session
     }
   }, []);
 
