@@ -301,6 +301,14 @@ export const AGENCY_INDUSTRIES = [
     benefits: ['Course & Fee Details', 'Student Inquiry Forms', 'Batch Timetable Displays', 'Instant WhatsApp Consultation'],
   },
   {
+    id: 'gyms-fitness-studios',
+    title: 'Gyms & Fitness Studios',
+    tag: 'Health & Fitness',
+    iconName: 'Dumbbell',
+    desc: 'High-energy fitness websites featuring membership plans, personal trainer showcases, class schedules, and 1-click WhatsApp free trial pass booking.',
+    benefits: ['Membership Pricing Calculator', 'Trainer Showcase & Specialties', 'Class Schedule & Batch Tracker', '1-Day Free Trial Pass WhatsApp CTA'],
+  },
+  {
     id: 'retail-local-business',
     title: 'Retail Shops & Local Stores',
     tag: 'Retail & Commerce',
@@ -396,6 +404,139 @@ export const AGENCY_TRUST_GUARANTEES = [
 ];
 
 export const AGENCY_PROJECTS = [
+  // 1. Classes & Coaching
+  {
+    id: 'apex-academy',
+    title: 'Apex Academy — Coaching & Test Prep Portal',
+    category: 'Classes & Coaching',
+    shortDesc: 'Modern coaching institute website featuring course syllabi, batch timetables, faculty credentials, and 1-click WhatsApp demo booking.',
+    fullDesc: 'A lead-generating web platform built for coaching institutes and tuition academies. Enables prospective students and parents to review batch timings, fee structures, syllabus downloads, previous year rankers, and schedule a 2-day free demo class.',
+    problem: 'Local coaching institutes lost prospective student admissions due to lack of an online timetable, fee transparency, and complicated phone enquiry processes.',
+    solution: 'Designed a modern mobile-first coaching platform with instant WhatsApp inquiry CTAs, batch schedule filters, and automated parent callback requests.',
+    technologies: ['React', 'Tailwind CSS', 'Node.js', 'Express.js', 'MongoDB'],
+    keyFeatures: [
+      'Course catalog with fee structure & duration details',
+      'Faculty credentials & student ranker showcase',
+      '1-Click WhatsApp "Book Free Demo Class" CTA',
+      'Downloadable PDF syllabus & prospectus'
+    ],
+    liveUrl: '#',
+    githubUrl: 'https://github.com/Code-With-Govind',
+    isSample: true,
+    featured: true,
+    themeColor: 'from-amber-600 to-navy-900',
+  },
+  {
+    id: 'edusphere-classes',
+    title: 'EduSphere — Science & Commerce Classes',
+    category: 'Classes & Coaching',
+    shortDesc: 'Subject-wise coaching web platform with test series alerts, student testimonials, and admissions enquiry counter.',
+    fullDesc: 'An academic flagship website engineered for high school and competitive exam classes with interactive batch availability and parent enquiry forms.',
+    problem: 'Parents wanted easy online access to weekly test schedules, faculty backgrounds, and admission dates from their smartphones.',
+    solution: 'Delivered a clean, trustworthy academic portal optimized for smartphone browsing with localized SEO ranking for neighborhood searches.',
+    technologies: ['React', 'JavaScript', 'Tailwind CSS', 'Express.js'],
+    keyFeatures: [
+      'Real-time batch vacancy and seat availability indicator',
+      'Student success gallery and verified parent testimonials',
+      'Quick inquiry capture connected directly to founder CRM',
+      'Integrated Google Maps branch locator and timing guide'
+    ],
+    liveUrl: '#',
+    githubUrl: 'https://github.com/Code-With-Govind',
+    isSample: true,
+    featured: false,
+    themeColor: 'from-blue-600 to-navy-950',
+  },
+
+  // 2. Gym & Fitness
+  {
+    id: 'ironcore-fitness',
+    title: 'IronCore — Gym, Crossfit & Personal Training Studio',
+    category: 'Gym & Fitness',
+    shortDesc: 'High-energy fitness website featuring membership tiers, certified trainer profiles, workout schedules, and free trial pass booking.',
+    fullDesc: 'A performance-driven web presence designed for commercial gyms and fitness centers. Converts local visitors into active gym members with transparent package comparisons, photo tour of equipment, and workout timetables.',
+    problem: 'Walk-in conversion was low because prospective gym-goers could not inspect equipment, class timings, or pricing without visiting in person.',
+    solution: 'Built a bold, dynamic dark-mode fitness site featuring high-res equipment galleries, class schedules (Zumba, CrossFit, Cardio), and WhatsApp trial pass booking.',
+    technologies: ['React', 'Tailwind CSS', 'Node.js', 'Express.js'],
+    keyFeatures: [
+      'Interactive membership pricing calculator (Monthly, Quarterly, Annual)',
+      'Certified personal trainer roster with specialization tags',
+      'Instant "Claim 1-Day Free Trial Pass" WhatsApp CTA',
+      'Weekly group workout timetable & batch tracker'
+    ],
+    liveUrl: '#',
+    githubUrl: 'https://github.com/Code-With-Govind',
+    isSample: true,
+    featured: true,
+    themeColor: 'from-red-600 to-navy-950',
+  },
+  {
+    id: 'fitpulse-yoga',
+    title: 'FitPulse — Boutique Yoga & Calisthenics Hub',
+    category: 'Gym & Fitness',
+    shortDesc: 'Aesthetic wellness center platform with daily batch timetables, dietary consultation booking, and trainer intros.',
+    fullDesc: 'A calm, wellness-focused digital platform tailored for yoga academies, pilates studios, and functional fitness centers.',
+    problem: 'Clients struggled to find slot timings and book personal trial sessions smoothly on mobile devices.',
+    solution: 'Engineered a minimalist, fast-loading booking interface with direct WhatsApp slot confirmation and automated reminder routing.',
+    technologies: ['React', 'Tailwind CSS', 'JavaScript'],
+    keyFeatures: [
+      'Batch time slot picker for morning and evening classes',
+      'Dietician & trainer appointment inquiry form',
+      'Client transformation stories and visual milestone gallery',
+      'Interactive membership benefits breakdown'
+    ],
+    liveUrl: '#',
+    githubUrl: 'https://github.com/Code-With-Govind',
+    isSample: true,
+    featured: false,
+    themeColor: 'from-emerald-600 to-navy-900',
+  },
+
+  // 3. Cafe / Restro / Hotel
+  {
+    id: 'urban-table-cafe',
+    title: 'The Urban Table — Cafe, Restro & Lounge',
+    category: 'Cafe / Restro / Hotel',
+    shortDesc: 'Atmospheric restaurant & cafe website featuring digital QR food menu, table reservation system, and food photo gallery.',
+    fullDesc: 'A visually appetizing web platform crafted for cafes, fine-dining restaurants, and lounges. Allows diners to view the full categorized menu with prices, discover chef specials, and reserve a table in 2 clicks.',
+    problem: 'Restaurant relied solely on paper menus and third-party food app commissions, losing direct diners and table reservations.',
+    solution: 'Created a contactless digital menu web app with high-res food photography, ambiance showcase, and zero-commission direct WhatsApp table reservations.',
+    technologies: ['React', 'Tailwind CSS', 'Node.js', 'Express.js'],
+    keyFeatures: [
+      'Categorized food & beverage menu with pricing and dietary tags',
+      'Instant table reservation form with date/time/guest count',
+      'Direct WhatsApp ordering for takeout/pickup orders',
+      'Google Maps direction integration and opening hours indicator'
+    ],
+    liveUrl: '#',
+    githubUrl: 'https://github.com/Code-With-Govind',
+    isSample: true,
+    featured: true,
+    themeColor: 'from-amber-500 to-stone-900',
+  },
+  {
+    id: 'velvet-haven-hotel',
+    title: 'Velvet Haven — Luxury Boutique Stay & Resort',
+    category: 'Cafe / Restro / Hotel',
+    shortDesc: 'Hotel & resort showcase featuring room categories, amenities overview, banquet hall inquiry, and direct booking.',
+    fullDesc: 'A premium hospitality website built for boutique hotels, resorts, and banquet spaces. Showcases room interiors, tariffs, banquet capacity for weddings/events, and location connectivity.',
+    problem: 'High OTA platform commissions reduced profit margins on direct room bookings and banquet leads.',
+    solution: 'Delivered an elegant, high-conversion hospitality website enabling direct guest inquiries and wedding banquet booking leads.',
+    technologies: ['React', 'Tailwind CSS', 'JavaScript', 'REST APIs'],
+    keyFeatures: [
+      'Room comparison matrix (Deluxe, Suite, Executive) with tariff details',
+      'Banquet hall & event booking lead capture form',
+      'Interactive room gallery and amenity icons',
+      'Direct WhatsApp booking helpline for instant tariff discount'
+    ],
+    liveUrl: '#',
+    githubUrl: 'https://github.com/Code-With-Govind',
+    isSample: true,
+    featured: false,
+    themeColor: 'from-violet-700 to-navy-950',
+  },
+
+  // 4. E-commerce
   {
     id: 'apex-commerce',
     title: 'Apex Commerce — Headless Retail Platform',
@@ -412,32 +553,34 @@ export const AGENCY_PROJECTS = [
       'Category badges and high-resolution responsive product galleries'
     ],
     liveUrl: '#',
-    githubUrl: 'https://github.com/govindrathod',
+    githubUrl: 'https://github.com/Code-With-Govind',
     isSample: true,
     featured: true,
     themeColor: 'from-blue-600 to-indigo-900',
   },
   {
-    id: 'pulsemetrics-analytics',
-    title: 'PulseMetrics — SaaS Business Telemetry',
-    category: 'Web Applications',
-    shortDesc: 'Real-time telemetry and KPI visualization platform featuring interactive charts, activity feeds, and exportable reports.',
-    fullDesc: 'PulseMetrics is a cloud telemetry dashboard tailored for digital service providers. It visualizes daily revenue metrics, active client sessions, conversion percentages, and system health status with real-time responsiveness.',
-    problem: 'Business operators were forced to juggle disjointed spreadsheets to track client onboarding and service performance metrics.',
-    solution: 'Engineered a unified analytics portal with dynamic chart visualizations, date range filtering, and clean responsive data cards.',
-    technologies: ['React', 'JavaScript', 'Recharts', 'Tailwind CSS', 'REST APIs'],
+    id: 'gt-clothing-hub',
+    title: 'GT Clothing Hub — Multi-Brand Apparel Storefront',
+    category: 'E-commerce',
+    shortDesc: 'E-commerce clothing store featuring size variants, visual color swatches, cart management, and WhatsApp quick checkout.',
+    fullDesc: 'A full-featured fashion and retail web store engineered for clothing brands. Allows shoppers to filter by sizes, fabric types, and trending seasonal collections with instant WhatsApp order transmission.',
+    problem: 'Fashion boutiques needed an easy way to showcase new arrivals to Instagram and WhatsApp audiences without complex merchant setups.',
+    solution: 'Engineered a lightweight catalog store with product quick-view modals and one-tap WhatsApp "Order This Outfit" messaging.',
+    technologies: ['React', 'Tailwind CSS', 'Node.js', 'MongoDB'],
     keyFeatures: [
-      'Interactive trend visualization (daily, weekly, monthly)',
-      'Multi-metric KPI summary cards with change indicators',
-      'Custom date filtering and status segmentation',
-      'Dark mode optimized interface reducing eye fatigue'
+      'Dynamic size and color variant selector',
+      'Instant WhatsApp order button with prefilled product title & SKU',
+      'Visual product lookbook carousel',
+      'Mobile-optimized drawer navigation'
     ],
     liveUrl: '#',
-    githubUrl: 'https://github.com/govindrathod',
+    githubUrl: 'https://github.com/Code-With-Govind',
     isSample: true,
-    featured: true,
-    themeColor: 'from-cyan-600 to-blue-900',
+    featured: false,
+    themeColor: 'from-pink-600 to-purple-950',
   },
+
+  // 5. Business Websites
   {
     id: 'nexus-logistics',
     title: 'Nexus Logistics — Freight & Fleet Corporate Portal',
@@ -454,52 +597,10 @@ export const AGENCY_PROJECTS = [
       'Corporate leadership and regulatory compliance sections'
     ],
     liveUrl: '#',
-    githubUrl: 'https://github.com/govindrathod',
+    githubUrl: 'https://github.com/Code-With-Govind',
     isSample: true,
     featured: true,
     themeColor: 'from-indigo-600 to-slate-900',
-  },
-  {
-    id: 'zenith-properties',
-    title: 'Zenith Real Estate — Premium Property Showcase',
-    category: 'Web Applications',
-    shortDesc: 'Architectural property discovery platform featuring high-resolution galleries, tour booking, and amenity filters.',
-    fullDesc: 'Zenith Properties delivers a luxury digital browsing experience for commercial and residential developments. Prospective tenants can explore floor plans, filter by geographic zone and pricing tiers, and schedule private viewings.',
-    problem: 'High-end buyers expected an immersive digital experience that standard MLS templates could not provide.',
-    solution: 'Created an aesthetic, image-centric web app featuring smooth transitions, interactive floor plan viewers, and tour scheduling.',
-    technologies: ['React', 'Tailwind CSS', 'JavaScript', 'REST APIs'],
-    keyFeatures: [
-      'High-resolution architectural image carousels',
-      'Advanced multi-parameter property filtering',
-      'Direct viewing appointment request workflow',
-      'Responsive map coordinates and neighborhood amenity tags'
-    ],
-    liveUrl: '#',
-    githubUrl: 'https://github.com/govindrathod',
-    isSample: true,
-    featured: false,
-    themeColor: 'from-emerald-700 to-navy-900',
-  },
-  {
-    id: 'aura-health',
-    title: 'Aura Health — Clinic Care & Patient Portal',
-    category: 'Web Applications',
-    shortDesc: 'Clean, accessible medical service directory with doctor scheduling, treatment overviews, and patient preparation guides.',
-    fullDesc: 'A healthcare portal designed with strict adherence to visual accessibility and user trust. Patients can review specialist credentials, select consultation slots, and access preparatory health resources.',
-    problem: 'Patients experienced confusion navigating complex clinic departments and telephone booking queues.',
-    solution: 'Developed an empathetic, high-contrast digital portal enabling instant doctor discovery and digital booking triage.',
-    technologies: ['React', 'Tailwind CSS', 'Express.js', 'MongoDB'],
-    keyFeatures: [
-      'Accessible typography adhering to WCAG AAA standards',
-      'Specialist search by department and consultation type',
-      'Streamlined patient booking inquiry form',
-      'Mobile-first responsive emergency contact bar'
-    ],
-    liveUrl: '#',
-    githubUrl: 'https://github.com/govindrathod',
-    isSample: true,
-    featured: false,
-    themeColor: 'from-teal-600 to-navy-950',
   },
   {
     id: 'vanguard-capital',
@@ -517,7 +618,7 @@ export const AGENCY_PROJECTS = [
       'Lightweight bundle delivering sub-second first contentful paint'
     ],
     liveUrl: '#',
-    githubUrl: 'https://github.com/govindrathod',
+    githubUrl: 'https://github.com/Code-With-Govind',
     isSample: true,
     featured: false,
     themeColor: 'from-slate-700 to-navy-950',

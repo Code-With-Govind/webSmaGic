@@ -19,7 +19,14 @@ export default function ProjectsPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [activeProjectModal, setActiveProjectModal] = useState(null);
 
-  const categories = ['All', 'E-commerce', 'Web Applications', 'Business Websites', 'Other'];
+  const categories = [
+    'All',
+    'Classes & Coaching',
+    'Gym & Fitness',
+    'Cafe / Restro / Hotel',
+    'E-commerce',
+    'Business Websites',
+  ];
 
   const filteredProjects =
     selectedCategory === 'All'

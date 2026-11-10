@@ -22,6 +22,7 @@ import {
   Briefcase,
   Building2,
   ChevronDown,
+  Dumbbell,
 } from 'lucide-react';
 
 const iconMap = {
@@ -47,6 +48,7 @@ const iconMap = {
   Briefcase,
   Building2,
   ChevronDown,
+  Dumbbell,
 };
 
 export default function DynamicIcon({ name, className = 'w-5 h-5', ...props }) {
