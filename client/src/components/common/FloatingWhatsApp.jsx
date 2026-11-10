@@ -40,7 +40,7 @@ export default function FloatingWhatsApp() {
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
         className="group relative flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-900/40 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-emerald-400/30"
-        aria-label="Chat with Govind Web Solutions on WhatsApp"
+        aria-label="Chat with WebsMagic on WhatsApp"
         title="Chat with us on WhatsApp"
       >
         {/* Active Online Indicator Dot */}

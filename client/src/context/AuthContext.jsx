@@ -6,7 +6,7 @@ const AuthContext = createContext(null);
 const DEFAULT_FOUNDER = {
   id: 'founder_1_govind',
   name: 'Govind Rathod',
-  email: 'govind@govindwebsolutions.com',
+  email: 'hello.websmagic@gmail.com',
   role: 'founder',
 };
 

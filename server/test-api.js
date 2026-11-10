@@ -47,7 +47,7 @@ function createMockRes() {
 
 async function runPhase5TestSuite() {
   console.log('================================================================');
-  console.log('Govind Web Solutions — Phase 6 Test Suite (End-to-End & Deployment)');
+  console.log('WebsMagic — Phase 6 Test Suite (End-to-End & Deployment)');
   console.log('================================================================');
   let passed = 0;
   let failed = 0;
@@ -85,7 +85,7 @@ async function runPhase5TestSuite() {
         fullName: '  <script>alert("hack")</script>Govind Rathod  ',
         email: '  GOVIND@EXAMPLE.COM  ',
         phone: '+91 9876543210',
-        company: 'Govind Web Solutions',
+        company: 'WebsMagic',
         service: 'E-commerce Website Development',
         budget: '$5,000 — $10,000',
         description: 'Need a scalable e-commerce store with modern checkout.',

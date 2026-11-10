@@ -39,7 +39,7 @@ import {
 } from '../utils/agencyData';
 
 export default function HomePage() {
-  useDocumentTitle('Govind Web Solutions | High-Performance Web Development Agency');
+  useDocumentTitle('WebsMagic | High-Performance Web Development Agency');
   const [selectedProject, setSelectedProject] = useState(null);
   const [openFaq, setOpenFaq] = useState(null);
 
@@ -88,7 +88,7 @@ export default function HomePage() {
                 </Link>
                 <a
                   href={getWhatsAppInquiryUrl({
-                    context: 'I would like to consult with Govind Web Solutions regarding a new website development project.',
+                    context: 'I would like to consult with WebsMagic regarding a new website development project.',
                   })}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -688,7 +688,7 @@ export default function HomePage() {
                 </Link>
                 <a
                   href={getWhatsAppInquiryUrl({
-                    context: 'Hi Govind Web Solutions! I am ready to start my project and would like to discuss next steps.',
+                    context: 'Hi WebsMagic! I am ready to start my project and would like to discuss next steps.',
                   })}
                   target="_blank"
                   rel="noopener noreferrer"

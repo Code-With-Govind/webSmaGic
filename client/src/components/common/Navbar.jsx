@@ -47,14 +47,14 @@ export default function Navbar() {
         <Link
           to="/"
           className="flex items-center gap-3.5 group focus:outline-none focus:ring-2 focus:ring-brand-accent rounded-lg p-1"
-          aria-label="Govind Web Solutions Homepage"
+          aria-label="WebsMagic Homepage"
         >
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-primary via-blue-600 to-brand-accent flex items-center justify-center text-white shadow-lg shadow-brand-primary/25 group-hover:shadow-brand-accent/40 transition-all duration-300">
             <Code2 className="w-5 h-5 group-hover:rotate-6 transition-transform" />
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-bold tracking-tight text-white group-hover:text-brand-accent transition-colors">
-              Govind Web Solutions
+              WebsMagic
             </span>
             <span className="text-[11px] uppercase tracking-widest text-slate-400 font-semibold">
               Digital Agency

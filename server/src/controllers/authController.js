@@ -52,13 +52,14 @@ export const login = async (req, res, next) => {
       });
     } else {
       // Offline fallback: Check against env variables
-      const f1Email = (process.env.FOUNDER_1_EMAIL || 'govind@govindwebsolutions.com').toLowerCase().trim();
+      const f1Email = (process.env.FOUNDER_1_EMAIL || 'hello.websmagic@gmail.com').toLowerCase().trim();
+      const f1LegacyEmail = 'govind@govindwebsolutions.com';
       const f1Pass = process.env.FOUNDER_1_PASSWORD || 'FounderGovind#2026';
-      const f2Email = (process.env.FOUNDER_2_EMAIL || 'partner@govindwebsolutions.com').toLowerCase().trim();
+      const f2Email = (process.env.FOUNDER_2_EMAIL || 'partner@websmagic.com').toLowerCase().trim();
       const f2Pass = process.env.FOUNDER_2_PASSWORD || 'FounderPartner#2026';
 
       let matchedFounder = null;
-      if (normalizedEmail === f1Email && password === f1Pass) {
+      if ((normalizedEmail === f1Email || normalizedEmail === f1LegacyEmail) && password === f1Pass) {
         matchedFounder = {
           id: 'founder_1_govind',
           name: process.env.FOUNDER_1_NAME || 'Govind Rathod',

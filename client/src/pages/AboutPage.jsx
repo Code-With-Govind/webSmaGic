@@ -64,7 +64,7 @@ export default function AboutPage() {
             Architecting Digital Solutions with Precision & Integrity
           </h1>
           <p className="text-lg text-slate-300 leading-relaxed">
-            Govind Web Solutions is a boutique web development and digital solutions agency dedicated to building high-performance websites and bespoke web applications for ambitious businesses.
+            WebsMagic is a boutique web development and digital solutions agency dedicated to building high-performance websites and bespoke web applications for ambitious businesses.
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export default function AboutPage() {
                 Who We Are
               </h2>
               <p>
-                Govind Web Solutions was founded with a singular, resolute objective: to provide modern businesses with genuine software engineering excellence without the overhead, bureaucratic friction, or impersonal treatment of massive agencies.
+                WebsMagic was founded with a singular, resolute objective: to provide modern businesses with genuine software engineering excellence without the overhead, bureaucratic friction, or impersonal treatment of massive agencies.
               </p>
               <p>
                 We recognize that in today's digital economy, an agency website is not a digital business card — it is your central commercial engine, client acquisition portal, and brand authority cornerstone. We bridge modern user-centric interface design with dependable, secure full-stack software architecture.
@@ -115,7 +115,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4">Our Vision</h3>
                 <p className="text-slate-300 leading-relaxed text-base">
-                  To establish Govind Web Solutions as the benchmark boutique agency for custom web engineering, known internationally for pristine code quality, transparent founder collaboration, and resilient technical execution.
+                  To establish WebsMagic as the benchmark boutique agency for custom web engineering, known internationally for pristine code quality, transparent founder collaboration, and resilient technical execution.
                 </p>
               </div>
               <div className="mt-8 pt-6 border-t border-navy-800 text-xs text-slate-400">

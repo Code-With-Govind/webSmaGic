@@ -129,6 +129,17 @@ export default function ContactPage() {
         const result = await inquiryService.submitInquiry(payload);
         trackInquirySuccess();
 
+        // If user chose WhatsApp, launch direct WhatsApp chat with founder
+        if (payload.preferredContactMethod === 'WhatsApp') {
+          const waText = `Hi WebsMagic! My name is ${payload.fullName}.\nService Required: ${payload.service}\nBudget: ${payload.budget || 'Flexible'}\nProject Requirements: ${payload.projectDescription}`;
+          window.open(`https://wa.me/919819609525?text=${encodeURIComponent(waText)}`, '_blank');
+        } else if (payload.preferredContactMethod === 'Email') {
+          // Open pre-filled direct email client to hello.websmagic@gmail.com
+          const mailSubject = `WebsMagic Project Inquiry: ${payload.service} - ${payload.fullName}`;
+          const mailBody = `Name: ${payload.fullName}\nEmail: ${payload.email}\nPhone: ${payload.phone || 'N/A'}\nCompany: ${payload.company || 'N/A'}\nService: ${payload.service}\nBudget: ${payload.budget || 'Flexible'}\n\nProject Requirements:\n${payload.projectDescription}`;
+          window.open(`mailto:hello.websmagic@gmail.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`, '_blank');
+        }
+
         // Success: record ID, reset form state
         setSubmittedInquiryId(result.data?.id || null);
         setIsSubmittedSuccessfully(true);
@@ -169,12 +180,12 @@ export default function ContactPage() {
   };
 
   const budgetRanges = [
-    'Less than $1,000',
-    '$1,000 — $3,000',
-    '$3,000 — $5,000',
-    '$5,000 — $10,000',
-    '$10,000+',
-    'Flexible / Undetermined',
+    'Under ₹10,000',
+    '₹10,000 — ₹25,000',
+    '₹25,000 — ₹50,000',
+    '₹50,000 — ₹1,00,000',
+    '₹1,00,000+',
+    'Flexible / Custom Scope',
   ];
 
   return (
@@ -208,10 +219,10 @@ export default function ContactPage() {
                     Inquiry Received Successfully
                   </span>
                   <h3 className="text-2xl font-bold text-white">
-                    Thank You for Contacting Govind Web Solutions
+                    Thank You for Contacting WebsMagic
                   </h3>
                   <p className="text-sm text-slate-300 leading-relaxed">
-                    Your inquiry has been safely saved in our database. Our technical founder, Govind Rathod, will review your project parameters and respond within 24 business hours.
+                    Your inquiry has been safely saved in our database. Our technical team will review your project parameters and respond within 24 business hours.
                   </p>
                   {submittedInquiryId && (
                     <p className="text-xs font-mono text-slate-500">

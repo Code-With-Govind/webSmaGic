@@ -47,7 +47,8 @@ app.use(
           allowedOrigins.includes('*') ||
           parsedUrl.hostname === 'localhost' ||
           parsedUrl.hostname.endsWith('.vercel.app') ||
-          parsedUrl.hostname === 'govindwebsolutions.com';
+          parsedUrl.hostname === 'govindwebsolutions.com' ||
+          parsedUrl.hostname === 'websmagic.in';
       } catch {
         isAllowed = false;
       }
@@ -70,8 +71,8 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // 4. API Status & Health-Check Endpoints
 app.get('/', (req, res) => {
-  return sendSuccess(res, 200, 'Govind Web Solutions API Server', {
-    service: 'Govind Web Solutions Backend API',
+  return sendSuccess(res, 200, 'WebsMagic API Server', {
+    service: 'WebsMagic Backend API',
     status: 'online',
     healthCheck: '/api/health',
     version: '1.0.0',
@@ -79,7 +80,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/health', (req, res) => {
-  return sendSuccess(res, 200, 'Govind Web Solutions API is operational', {
+  return sendSuccess(res, 200, 'WebsMagic API is operational', {
     status: 'healthy',
     database: isDBConnected() ? 'connected' : 'disconnected',
     timestamp: new Date().toISOString(),

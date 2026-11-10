@@ -1,4 +1,4 @@
-# robots.txt for Govind Web Solutions (https://govindwebsolutions.com)
+# robots.txt for WebsMagic (https://web-sma-gic.vercel.app)
 User-agent: *
 Allow: /
 Allow: /about
@@ -14,5 +14,5 @@ Disallow: /login
 Disallow: /api/
 Disallow: /api/*
 
-Sitemap: https://govindwebsolutions.com/sitemap.xml
+Sitemap: https://web-sma-gic.vercel.app/sitemap.xml
 

@@ -1,8 +1,8 @@
 import { API_BASE_URL } from '../services/api';
 
 const STORAGE_KEYS = {
-  VISITOR_ID: 'gws_vid',
-  SESSION_ID: 'gws_sid',
+  VISITOR_ID: 'websmagic_vid',
+  SESSION_ID: 'websmagic_sid',
 };
 
 // Generate privacy-conscious random ID (no hardware or device fingerprinting)

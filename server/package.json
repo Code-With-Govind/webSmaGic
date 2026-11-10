@@ -1,8 +1,8 @@
 {
-  "name": "govind-web-solutions-server",
+  "name": "websmagic-server",
   "version": "1.0.0",
   "private": true,
-  "description": "Backend API for Govind Web Solutions agency platform",
+  "description": "Backend API for WebsMagic agency platform",
   "type": "module",
   "main": "src/server.js",
   "scripts": {
@@ -29,6 +29,6 @@
     "api",
     "auth"
   ],
-  "author": "Govind Web Solutions",
+  "author": "WebsMagic",
   "license": "ISC"
 }

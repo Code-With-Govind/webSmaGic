@@ -43,109 +43,27 @@ import inquiryService from '../services/inquiryService';
 import { useAuth } from '../context/AuthContext';
 import { COMPANY_CONFIG } from '../utils/agencyData';
 
-const DEFAULT_PREVIEW_DATA = {
+const EMPTY_REAL_DATA = {
   overview: {
-    totalVisitors: 148,
-    totalSessions: 182,
-    totalPageViews: 412,
-    totalInquiries: 4,
-    inquiryAttempts: 7,
-    serviceCtaClicks: 24,
-    conversionRate: 4.1,
+    totalVisitors: 0,
+    totalSessions: 0,
+    totalPageViews: 0,
+    totalInquiries: 0,
+    inquiryAttempts: 0,
+    serviceCtaClicks: 0,
+    conversionRate: 0,
     dbStatus: 'operational',
   },
-  traffic: [
-    { date: '2026-11-02', pageViews: 45, visitors: 18 },
-    { date: '2026-11-03', pageViews: 52, visitors: 22 },
-    { date: '2026-11-04', pageViews: 68, visitors: 29 },
-    { date: '2026-11-05', pageViews: 59, visitors: 25 },
-    { date: '2026-11-06', pageViews: 74, visitors: 31 },
-    { date: '2026-11-07', pageViews: 81, visitors: 35 },
-    { date: '2026-11-08', pageViews: 33, visitors: 14 },
-  ],
-  pages: [
-    { path: '/', views: 184, visitors: 112 },
-    { path: '/services', views: 98, visitors: 64 },
-    { path: '/projects', views: 62, visitors: 41 },
-    { path: '/contact', views: 44, visitors: 32 },
-    { path: '/about', views: 24, visitors: 18 },
-  ],
-  sources: [
-    { source: 'direct', count: 96, percentage: 52 },
-    { source: 'google', count: 54, percentage: 29 },
-    { source: 'whatsapp', count: 22, percentage: 12 },
-    { source: 'linkedin', count: 12, percentage: 7 },
-  ],
-  services: [
-    { service: 'Business Website Development', ctaClicks: 11, inquiries: 2 },
-    { service: 'E-commerce Website Development', ctaClicks: 7, inquiries: 1 },
-    { service: 'Custom Web Application Development', ctaClicks: 4, inquiries: 1 },
-    { service: 'UI/UX Design', ctaClicks: 2, inquiries: 0 },
-  ],
+  traffic: [],
+  pages: [],
+  sources: [],
+  services: [],
   inquiries: {
-    total: 4,
-    byStatus: { new: 1, contacted: 1, 'in-progress': 1, completed: 1, rejected: 0 },
-    byContactMethod: [
-      { method: 'WhatsApp', count: 3 },
-      { method: 'Email', count: 1 },
-    ],
+    total: 0,
+    byStatus: { new: 0, contacted: 0, 'in-progress': 0, completed: 0, rejected: 0 },
+    byContactMethod: [],
   },
 };
-
-const DEFAULT_SAMPLE_INQUIRIES = [
-  {
-    _id: 'inq_sample_1',
-    fullName: 'Amit Sharma',
-    email: 'amit.sharma@sharmaclasses.in',
-    phone: '+91 98201 12345',
-    company: 'Sharma Coaching Classes',
-    service: 'Business Website Development',
-    budget: '₹25,000 — ₹50,000',
-    preferredContactMethod: 'WhatsApp',
-    status: 'new',
-    projectDescription: 'We need a responsive corporate website for our coaching institute with 12th & JEE/NEET course details, faculty profiles, fee structure, syllabus download, and direct WhatsApp admission inquiries.',
-    createdAt: new Date(Date.now() - 3600000 * 3).toISOString(),
-  },
-  {
-    _id: 'inq_sample_2',
-    fullName: 'Rahul Verma',
-    email: 'rahul@vermagrand.com',
-    phone: '+91 98111 54321',
-    company: 'Verma Grand Cafe & Hotel',
-    service: 'Business Website Development',
-    budget: '₹50,000 — ₹1,00,000',
-    preferredContactMethod: 'Phone',
-    status: 'contacted',
-    projectDescription: 'Looking for a premium dark-mode cafe website with QR code digital menu catalog, room booking inquiries, Google Maps integration, and table reservation request form.',
-    createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
-  },
-  {
-    _id: 'inq_sample_3',
-    fullName: 'Sneha Patel',
-    email: 'sneha@patelboutique.com',
-    phone: '+91 97234 87654',
-    company: 'Patel Fashion & Apparel Store',
-    service: 'E-commerce Website Development',
-    budget: '₹75,000 — ₹1,50,000',
-    preferredContactMethod: 'WhatsApp',
-    status: 'in-progress',
-    projectDescription: 'We operate a physical boutique retail store and want an online e-commerce catalog with search filters, cart, Razorpay payment gateway, and instant WhatsApp order notifications.',
-    createdAt: new Date(Date.now() - 3600000 * 48).toISOString(),
-  },
-  {
-    _id: 'inq_sample_4',
-    fullName: 'Vikram Singh',
-    email: 'vikram@techpulselogistics.com',
-    phone: '+91 98980 99887',
-    company: 'TechPulse Logistics',
-    service: 'Custom Web Application Development',
-    budget: '₹1,50,000+',
-    preferredContactMethod: 'Email',
-    status: 'completed',
-    projectDescription: 'Need a custom web portal to replace Excel spreadsheets for shipment tracking, driver route management, customer quote calculator, and automated PDF invoice generation.',
-    createdAt: new Date(Date.now() - 3600000 * 72).toISOString(),
-  },
-];
 
 export default function DashboardPage() {
   useDocumentTitle('Business Analytics & Lead CRM — Founders Portal');
@@ -174,11 +92,11 @@ export default function DashboardPage() {
     setError(null);
     try {
       const result = await dashboardService.getDashboardData(period);
-      setData(result);
+      setData(result || EMPTY_REAL_DATA);
       setLastRefreshed(new Date());
     } catch (err) {
-      console.warn('[Dashboard] Backend offline, loading preview telemetry:', err.message);
-      setData(DEFAULT_PREVIEW_DATA);
+      console.warn('[Dashboard] Telemetry fetch error:', err.message);
+      setData(EMPTY_REAL_DATA);
       setLastRefreshed(new Date());
     } finally {
       setLoading(false);
@@ -193,14 +111,10 @@ export default function DashboardPage() {
         status: inquiryFilterStatus,
         search: inquirySearch,
       });
-      if (result.data?.inquiries && result.data.inquiries.length > 0) {
-        setInquiriesList(result.data.inquiries);
-      } else {
-        setInquiriesList(DEFAULT_SAMPLE_INQUIRIES);
-      }
+      setInquiriesList(result.data?.inquiries || []);
     } catch (err) {
-      console.warn('[Dashboard] Inquiries offline, loading preview records:', err.message);
-      setInquiriesList(DEFAULT_SAMPLE_INQUIRIES);
+      console.warn('[Dashboard] Inquiries fetch error:', err.message);
+      setInquiriesList([]);
     } finally {
       setInquiriesLoading(false);
     }
@@ -298,7 +212,7 @@ export default function DashboardPage() {
                 </span>
               </div>
               <p className="text-xs text-slate-400">
-                Govind Web Solutions — First-Party Telemetry & Real-Time Lead Pipeline
+                WebsMagic — First-Party Telemetry & Real-Time Lead Pipeline
               </p>
             </div>
           </div>
@@ -315,7 +229,7 @@ export default function DashboardPage() {
                   {founder?.name || 'Govind Rathod'}
                 </span>
                 <span className="text-[10px] text-slate-400 block leading-tight">
-                  {founder?.email || 'govind@govindwebsolutions.com'}
+                  {founder?.email || 'hello.websmagic@gmail.com'}
                 </span>
               </div>
             </div>
@@ -819,7 +733,7 @@ export default function DashboardPage() {
                             <td className="py-3.5 px-4">
                               <div className="flex items-center gap-2">
                                 <a
-                                  href={`mailto:${inq.email}?subject=${encodeURIComponent(`Govind Web Solutions — Regarding your ${inq.service} Inquiry`)}`}
+                                  href={`mailto:${inq.email}?subject=${encodeURIComponent(`WebsMagic — Regarding your ${inq.service} Inquiry`)}`}
                                   className="p-1.5 rounded-lg bg-navy-800 text-slate-300 hover:text-white hover:bg-brand-primary transition-colors"
                                   title={`Email: ${inq.email}`}
                                   aria-label="Email Client"
@@ -829,7 +743,7 @@ export default function DashboardPage() {
 
                                 {cleanPhone ? (
                                   <a
-                                    href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hi ${inq.fullName}, Govind Rathod from Govind Web Solutions here. Thank you for reaching out regarding your ${inq.service} project!`)}`}
+                                    href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hi ${inq.fullName}, Govind Rathod from WebsMagic here. Thank you for reaching out regarding your ${inq.service} project!`)}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="p-1.5 rounded-lg bg-emerald-950/60 text-emerald-400 hover:bg-emerald-600 hover:text-white transition-colors"
@@ -1000,7 +914,7 @@ export default function DashboardPage() {
               <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
                 {selectedInquiryDetail.phone && (
                   <a
-                    href={`https://wa.me/${selectedInquiryDetail.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi ${selectedInquiryDetail.fullName}, Govind Rathod from Govind Web Solutions here. Thank you for your inquiry about ${selectedInquiryDetail.service}!`)}`}
+                    href={`https://wa.me/${selectedInquiryDetail.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi ${selectedInquiryDetail.fullName}, Govind Rathod from WebsMagic here. Thank you for your inquiry about ${selectedInquiryDetail.service}!`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-colors shadow-md shadow-emerald-900/30"
@@ -1010,7 +924,7 @@ export default function DashboardPage() {
                   </a>
                 )}
                 <a
-                  href={`mailto:${selectedInquiryDetail.email}?subject=${encodeURIComponent(`Govind Web Solutions — Regarding your ${selectedInquiryDetail.service} Inquiry`)}`}
+                  href={`mailto:${selectedInquiryDetail.email}?subject=${encodeURIComponent(`WebsMagic — Regarding your ${selectedInquiryDetail.service} Inquiry`)}`}
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-primary hover:bg-brand-secondary text-white text-xs font-semibold transition-colors"
                 >
                   <Mail className="w-3.5 h-3.5" />

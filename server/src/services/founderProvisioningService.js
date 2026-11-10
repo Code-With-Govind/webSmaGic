@@ -14,12 +14,12 @@ export const seedFounders = async () => {
     const foundersConfig = [
       {
         name: process.env.FOUNDER_1_NAME || 'Govind Rathod',
-        email: (process.env.FOUNDER_1_EMAIL || 'govind@govindwebsolutions.com').toLowerCase().trim(),
+        email: (process.env.FOUNDER_1_EMAIL || 'hello.websmagic@gmail.com').toLowerCase().trim(),
         plainPassword: process.env.FOUNDER_1_PASSWORD || 'FounderGovind#2026',
       },
       {
         name: process.env.FOUNDER_2_NAME || 'Co-founder (Business Development)',
-        email: (process.env.FOUNDER_2_EMAIL || 'partner@govindwebsolutions.com').toLowerCase().trim(),
+        email: (process.env.FOUNDER_2_EMAIL || 'partner@websmagic.com').toLowerCase().trim(),
         plainPassword: process.env.FOUNDER_2_PASSWORD || 'FounderPartner#2026',
       },
     ];

@@ -18,7 +18,7 @@ export default function HeroArtwork() {
           </div>
           <div className="flex items-center gap-1.5 text-xs text-slate-400 font-mono">
             <Terminal className="w-3.5 h-3.5 text-brand-accent" />
-            <span>govind-web-solutions.config.js</span>
+            <span>websmagic.config.js</span>
           </div>
           <div className="w-12" />
         </div>
@@ -32,7 +32,7 @@ export default function HeroArtwork() {
           </p>
           <p className="pl-4">
             <span className="text-blue-300">name</span>:{' '}
-            <span className="text-emerald-300">'Govind Web Solutions'</span>,
+            <span className="text-emerald-300">'WebsMagic'</span>,
           </p>
           <p className="pl-4">
             <span className="text-blue-300">mission</span>:{' '}

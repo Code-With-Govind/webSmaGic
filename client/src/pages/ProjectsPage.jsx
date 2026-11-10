@@ -58,7 +58,7 @@ export default function ProjectsPage() {
               Verified Live Production Platform
             </span>
             <p className="text-slate-300 text-xs leading-relaxed">
-              Featured below is a live, production-grade e-commerce flagship engineered by Govind Web Solutions. Explore the live storefront, inspect the responsive catalog, and review the full technical implementation.
+              Featured below is a live, production-grade e-commerce flagship engineered by WebsMagic. Explore the live storefront, inspect the responsive catalog, and review the full technical implementation.
             </p>
           </div>
         </div>
@@ -189,7 +189,7 @@ export default function ProjectsPage() {
             <Layers className="w-10 h-10 text-brand-accent mx-auto mb-3" />
             <h3 className="text-lg font-bold text-white mb-2">Bespoke Architecture Available</h3>
             <p className="text-sm text-slate-300 mb-6 leading-relaxed">
-              We design and engineer tailored digital platforms for <span className="text-white font-semibold">{selectedCategory}</span>. Contact Govind Web Solutions to commission a high-converting website for your business.
+              We design and engineer tailored digital platforms for <span className="text-white font-semibold">{selectedCategory}</span>. Contact WebsMagic to commission a high-converting website for your business.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link

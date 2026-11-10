@@ -25,7 +25,7 @@ export default function Footer() {
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-bold tracking-tight text-white group-hover:text-brand-accent transition-colors">
-                  Govind Web Solutions
+                  WebsMagic
                 </span>
                 <span className="text-[11px] uppercase tracking-widest text-slate-400 font-semibold">
                   Digital Agency
@@ -37,37 +37,28 @@ export default function Footer() {
               We engineer bespoke web applications, responsive corporate platforms, and scalable digital systems tailored to help forward-thinking businesses scale online.
             </p>
 
-            {/* Social Links (Clearly identified placeholders) */}
+            {/* Social Links */}
             <div className="pt-2">
               <span className="block text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">
                 Connect With Us
               </span>
               <div className="flex items-center gap-3">
                 <a
-                  href="https://github.com/govindrathod"
+                  href="https://www.linkedin.com/in/govindrathod"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-9 h-9 rounded-lg bg-navy-900 border border-navy-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-brand-accent hover:bg-navy-850 transition-colors"
-                  aria-label="Founder GitHub Profile"
-                >
-                  <Github className="w-4 h-4" />
-                </a>
-                <a
-                  href="https://www.linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-navy-900 border border-navy-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-brand-accent hover:bg-navy-850 transition-colors"
-                  aria-label="LinkedIn Profile Placeholder"
+                  aria-label="Founder LinkedIn Profile"
                 >
                   <Linkedin className="w-4 h-4" />
                 </a>
-                <div
-                  className="w-9 h-9 rounded-lg bg-navy-900 border border-navy-800 flex items-center justify-center text-slate-400 cursor-not-allowed opacity-60"
-                  title="Social profile link to be configured"
-                  aria-label="Social Link Placeholder"
+                <a
+                  href={`mailto:${COMPANY_CONFIG.email}`}
+                  className="w-9 h-9 rounded-lg bg-navy-900 border border-navy-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-brand-accent hover:bg-navy-850 transition-colors"
+                  aria-label="Direct Email"
                 >
-                  <Globe className="w-4 h-4" />
-                </div>
+                  <Mail className="w-4 h-4" />
+                </a>
               </div>
             </div>
           </div>
@@ -172,7 +163,7 @@ export default function Footer() {
 
         {/* Bottom Bar & Back to top */}
         <div className="pt-8 border-t border-navy-850 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <p>© {currentYear} Govind Web Solutions. All rights reserved.</p>
+          <p>© {currentYear} WebsMagic. All rights reserved.</p>
           
           <div className="flex items-center gap-6">
             <span className="text-slate-400">Professional Web Development Agency</span>

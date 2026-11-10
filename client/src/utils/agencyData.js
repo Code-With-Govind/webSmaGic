@@ -4,7 +4,7 @@
  * Centralized, configurable company configuration & contact channels
  */
 export const COMPANY_CONFIG = {
-  name: 'Govind Web Solutions',
+  name: 'WebsMagic',
   tagline: 'Professional Web Development & Digital Solutions Agency',
   email: 'hello.websmagic@gmail.com',
   phoneDisplay: '+91 98196 09525',
@@ -23,7 +23,7 @@ export const COMPANY_CONFIG = {
  * @returns {string} Fully encoded wa.me deep link
  */
 export const getWhatsAppInquiryUrl = ({ service, name, context } = {}) => {
-  let message = `Hi Govind Web Solutions!`;
+  let message = `Hi WebsMagic!`;
   if (name && name.trim()) {
     message += ` My name is ${name.trim()}.`;
   }
@@ -536,7 +536,7 @@ export const AGENCY_FOUNDERS = [
     name: 'Govind Rathod',
     role: 'Co-founder & Full Stack Developer',
     status: 'Active Profile',
-    bio: 'Govind is a passionate full-stack developer and software craftsman dedicated to engineering robust, performant web applications and bespoke digital systems. With deep technical expertise across React, Node.js, Express, and database architectures, he spearheads the technical design, architectural integrity, and code quality across all Govind Web Solutions client engagements.',
+    bio: 'Govind is a passionate full-stack developer and software craftsman dedicated to engineering robust, performant web applications and bespoke digital systems. With deep technical expertise across React, Node.js, Express, and database architectures, he spearheads the technical design, architectural integrity, and code quality across all WebsMagic client engagements.',
     responsibilities: [
       'Full-stack software architecture and system design',
       'Technical project execution and code quality governance',
@@ -572,7 +572,7 @@ export const AGENCY_FOUNDERS = [
     name: 'Co-founder (Details To Be Provided)',
     role: 'Co-founder & Business Development / Marketing',
     status: 'Pending Onboarding',
-    bio: 'The co-founder oversees business development, client relationship management, strategic partnerships, and marketing initiatives for Govind Web Solutions. Verified name, background, professional biography, and public profile links will be updated upon official onboarding.',
+    bio: 'The co-founder oversees business development, client relationship management, strategic partnerships, and marketing initiatives for WebsMagic. Verified name, background, professional biography, and public profile links will be updated upon official onboarding.',
     responsibilities: [
       'Client acquisition, requirement gathering, and proposal alignment',
       'Strategic market positioning and agency branding',
@@ -595,7 +595,7 @@ export const AGENCY_FOUNDERS = [
     socialLinks: {
       github: '',
       linkedin: '#',
-      email: 'business@govindwebsolutions.com',
+      email: 'hello.websmagic@gmail.com',
     },
     isPlaceholder: true,
   },

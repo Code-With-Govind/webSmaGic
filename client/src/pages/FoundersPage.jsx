@@ -20,7 +20,7 @@ import Badge from '../components/common/Badge';
 import { AGENCY_FOUNDERS } from '../utils/agencyData';
 
 export default function FoundersPage() {
-  useDocumentTitle('Leadership & Founders — Govind Web Solutions');
+  useDocumentTitle('Leadership & Founders — WebsMagic');
 
   const [founder1, founder2] = AGENCY_FOUNDERS;
 
@@ -34,7 +34,7 @@ export default function FoundersPage() {
             <span>Executive Leadership</span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
-            Meet the Founders Behind Govind Web Solutions
+            Meet the Founders Behind WebsMagic
           </h1>
           <p className="text-lg text-slate-300 leading-relaxed">
             Our agency is steered by hands-on leadership pairing technical software craftsmanship with strategic client advisory.
@@ -269,7 +269,7 @@ export default function FoundersPage() {
             Direct Founder Access on Every Project
           </h2>
           <p className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
-            When you collaborate with Govind Web Solutions, you work directly with agency leadership. No account coordinators, no communication silos, and direct engineering accountability.
+            When you collaborate with WebsMagic, you work directly with agency leadership. No account coordinators, no communication silos, and direct engineering accountability.
           </p>
           <Link
             to="/contact"

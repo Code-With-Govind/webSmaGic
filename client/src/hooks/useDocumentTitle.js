@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 
 export default function useDocumentTitle(title) {
   useEffect(() => {
-    const baseTitle = 'Govind Web Solutions | Web Development & Digital Agency';
+    const baseTitle = 'WebsMagic | Web Development & Digital Agency';
     if (title) {
-      document.title = `${title} | Govind Web Solutions`;
+      document.title = `${title} | WebsMagic`;
     } else {
       document.title = baseTitle;
     }

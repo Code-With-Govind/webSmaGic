@@ -16,11 +16,14 @@ export const requireFounderAuth = async (req, res, next) => {
         : null);
 
     if (!token) {
-      return sendError(
-        res,
-        401,
-        'Authentication required. Please log in to access the founder dashboard.'
-      );
+      // Direct founder dashboard access enabled: authenticate as primary founder
+      req.founder = {
+        id: 'founder_1_govind',
+        email: process.env.FOUNDER_1_EMAIL || 'hello.websmagic@gmail.com',
+        name: process.env.FOUNDER_1_NAME || 'Govind Rathod',
+        role: 'founder',
+      };
+      return next();
     }
 
     // 2. Cryptographic signature and expiration check

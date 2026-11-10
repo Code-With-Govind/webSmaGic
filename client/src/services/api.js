@@ -15,7 +15,7 @@ export const API_BASE_URL = rawBaseUrl.endsWith('/api')
   ? rawBaseUrl
   : `${rawBaseUrl.replace(/\/$/, '')}/api`;
 
-const TOKEN_STORAGE_KEY = 'gws_founder_token';
+const TOKEN_STORAGE_KEY = 'websmagic_founder_token';
 
 /**
  * Retrieve saved founder token for cross-domain Bearer authorization

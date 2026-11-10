@@ -5,7 +5,7 @@ import useDocumentTitle from '../hooks/useDocumentTitle';
 import { useAuth } from '../context/AuthContext';
 
 export default function LoginPage() {
-  useDocumentTitle('Founder Portal Login — Govind Web Solutions');
+  useDocumentTitle('Founder Portal Login — WebsMagic');
   const navigate = useNavigate();
   const location = useLocation();
   const { login, isAuthenticated } = useAuth();
@@ -57,7 +57,7 @@ export default function LoginPage() {
             Founder Portal Login
           </h1>
           <p className="text-xs text-slate-400">
-            Govind Web Solutions — Secure Business Analytics Access
+            WebsMagic — Secure Business Analytics Access
           </p>
         </div>
 
@@ -90,7 +90,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isSubmitting}
-                  placeholder="govind@govindwebsolutions.com"
+                  placeholder="hello.websmagic@gmail.com"
                   className="w-full pl-10 pr-4 py-3 rounded-xl bg-navy-950 text-white placeholder-slate-500 border border-navy-750 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 focus:outline-none transition-colors text-sm disabled:opacity-60"
                   required
                 />

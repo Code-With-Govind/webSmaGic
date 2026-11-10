@@ -1,13 +1,13 @@
 import jwt from 'jsonwebtoken';
 
-const TOKEN_COOKIE_NAME = 'gws_founder_token';
-const JWT_SECRET = process.env.SESSION_SECRET || 'gws-super-secure-session-secret-key-at-least-32-chars';
+const TOKEN_COOKIE_NAME = 'websmagic_founder_token';
+const getJwtSecret = () => process.env.SESSION_SECRET || 'websmagic-super-secure-session-secret-key-at-least-32-chars';
 
 /**
  * Generate cryptographically signed JWT for founder session
  */
 export const generateToken = (payload) => {
-  return jwt.sign(payload, JWT_SECRET, {
+  return jwt.sign(payload, getJwtSecret(), {
     expiresIn: '24h',
   });
 };
@@ -17,7 +17,7 @@ export const generateToken = (payload) => {
  */
 export const verifyToken = (token) => {
   try {
-    return jwt.verify(token, JWT_SECRET);
+    return jwt.verify(token, getJwtSecret());
   } catch {
     return null;
   }
