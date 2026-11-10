@@ -6,10 +6,10 @@
 export const COMPANY_CONFIG = {
   name: 'Govind Web Solutions',
   tagline: 'Professional Web Development & Digital Solutions Agency',
-  email: 'contact@govindwebsolutions.com',
-  phoneDisplay: '+91 98765 43210',
-  whatsappNumber: '919876543210', // Digits only with country code (e.g. 91 for India)
-  location: 'India — Delivering Worldwide Remotely',
+  email: 'hello.websmagic@gmail.com',
+  phoneDisplay: '+91 98196 09525',
+  whatsappNumber: '919819609525', // Digits only with country code (e.g. 91 for India)
+  location: 'Airoli, Navi Mumbai, Maharashtra, India',
   operatingHours: 'Monday – Saturday: 9:00 AM – 8:00 PM IST',
   responseTime: 'Replies within 24 business hours (Instant on WhatsApp)',
 };
@@ -419,6 +419,7 @@ export const AGENCY_PROJECTS = [
       'Persistent shopping cart with responsive slide-over drawer',
       'Mobile-first responsive UX with sub-second page rendering'
     ],
+    coverImage: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=1200&auto=format&fit=crop&q=80',
     liveUrl: 'https://gt-clothinghub.vercel.app/',
     isSample: false,
     featured: true,
@@ -562,7 +563,7 @@ export const AGENCY_FOUNDERS = [
     socialLinks: {
       github: null,
       linkedin: 'https://www.linkedin.com/in/govindrathod',
-      email: 'contact@govindwebsolutions.com',
+      email: 'hello.websmagic@gmail.com',
     },
     isPlaceholder: false,
   },

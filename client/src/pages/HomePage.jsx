@@ -319,18 +319,35 @@ export default function HomePage() {
                 className="group rounded-2xl bg-navy-900/80 border border-navy-800 hover:border-navy-700 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-2xl"
               >
                 {/* Visual Representation Header */}
-                <div className={`h-48 bg-gradient-to-br ${project.themeColor} p-6 flex flex-col justify-between relative overflow-hidden`}>
+                <div className={`h-52 bg-gradient-to-br ${project.themeColor} p-6 flex flex-col justify-between relative overflow-hidden`}>
+                  {project.coverImage && (
+                    <>
+                      <img
+                        src={project.coverImage}
+                        alt={project.title}
+                        className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/70 to-navy-950/20" />
+                    </>
+                  )}
                   <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:16px_16px]" />
                   <div className="relative z-10 flex items-center justify-between">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-navy-950/70 text-slate-200 border border-white/10 backdrop-blur-sm">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-navy-950/85 text-slate-100 border border-white/15 backdrop-blur-sm">
                       {project.category}
                     </span>
-                    <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-amber-400/20 text-amber-200 border border-amber-400/30">
-                      Sample Case Study
-                    </span>
+                    {!project.isSample && (
+                      <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 backdrop-blur-md shadow-sm">
+                        Verified Live
+                      </span>
+                    )}
+                    {project.isSample && (
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-amber-400/20 text-amber-200 border border-amber-400/30">
+                        Sample Case Study
+                      </span>
+                    )}
                   </div>
                   <div className="relative z-10">
-                    <h3 className="text-xl font-bold text-white tracking-tight drop-shadow-sm">
+                    <h3 className="text-xl font-bold text-white tracking-tight drop-shadow-md">
                       {project.title}
                     </h3>
                   </div>
@@ -362,17 +379,18 @@ export default function HomePage() {
                       <span>Explore Case Study</span>
                       <ArrowUpRight className="w-4 h-4" />
                     </button>
-                    {project.githubUrl && (
+                    {project.liveUrl && project.liveUrl !== '#' ? (
                       <a
-                        href={project.githubUrl}
+                        href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-slate-400 hover:text-white transition-colors"
-                        aria-label="GitHub Repository"
+                        className="text-slate-400 hover:text-brand-accent transition-colors p-1"
+                        title="Visit Live Website"
+                        aria-label="Visit Live Website"
                       >
-                        <Github className="w-4 h-4" />
+                        <ExternalLink className="w-4 h-4" />
                       </a>
-                    )}
+                    ) : null}
                   </div>
                 </div>
               </div>

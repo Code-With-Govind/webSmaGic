@@ -57,13 +57,31 @@ export default function ProjectModal({ project, isOpen, onClose }) {
 
         {/* Modal Body */}
         <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-slate-300">
-          {/* Sample disclaimer banner */}
-          <div className="p-4 rounded-xl bg-navy-850/70 border border-navy-700/60 flex items-start gap-3 text-xs text-slate-300">
-            <AlertCircle className="w-4 h-4 text-brand-accent shrink-0 mt-0.5" />
-            <p>
-              This case study represents an architectural reference and portfolio prototype developed by our engineering team. Live URLs and verified client case studies will be updated as non-disclosure agreements permit.
-            </p>
-          </div>
+          {/* Cover image showcase if available */}
+          {project.coverImage && (
+            <div className="relative rounded-2xl overflow-hidden border border-navy-750 max-h-64 sm:max-h-72 shadow-lg group">
+              <img
+                src={project.coverImage}
+                alt={project.title}
+                className="w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-transparent to-transparent flex items-end p-4">
+                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-navy-900/90 text-slate-200 border border-navy-700 backdrop-blur-md">
+                  Live Production Storefront Showcase
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Sample disclaimer banner (only for sample projects) */}
+          {project.isSample && (
+            <div className="p-4 rounded-xl bg-navy-850/70 border border-navy-700/60 flex items-start gap-3 text-xs text-slate-300">
+              <AlertCircle className="w-4 h-4 text-brand-accent shrink-0 mt-0.5" />
+              <p>
+                This case study represents an architectural reference and portfolio prototype developed by our engineering team. Live URLs and verified client case studies will be updated as non-disclosure agreements permit.
+              </p>
+            </div>
+          )}
 
           {/* Overview */}
           <div>
