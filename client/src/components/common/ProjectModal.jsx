@@ -133,13 +133,25 @@ export default function ProjectModal({ project, isOpen, onClose }) {
                 <span>View Repository</span>
               </a>
             )}
-            <button
-              onClick={() => alert('Live demonstration environment is deployed on client staging servers. Contact us for a guided demonstration.')}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-primary hover:bg-brand-secondary text-white text-xs font-medium transition-colors"
-            >
-              <ExternalLink className="w-4 h-4" />
-              <span>Live Prototype Preview</span>
-            </button>
+            {project.liveUrl && project.liveUrl !== '#' ? (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-primary hover:bg-brand-secondary text-white text-xs font-medium transition-colors shadow-md shadow-brand-primary/25"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span>Visit Live Website</span>
+              </a>
+            ) : (
+              <button
+                onClick={() => alert('Live demonstration environment is deployed on client staging servers. Contact us for a guided demonstration.')}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-primary hover:bg-brand-secondary text-white text-xs font-medium transition-colors"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span>Live Prototype Preview</span>
+              </button>
+            )}
           </div>
 
           <button

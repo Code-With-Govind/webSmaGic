@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   ExternalLink,
   Github,
@@ -50,15 +51,15 @@ export default function ProjectsPage() {
           </p>
         </div>
 
-        {/* Realistic Content Advisory Notice */}
+        {/* Production Project Showcase Header */}
         <div className="max-w-4xl mx-auto mb-12 p-4 sm:p-5 rounded-2xl bg-navy-900/90 border border-navy-750 flex items-start gap-3.5 text-xs sm:text-sm text-slate-300 shadow-md">
-          <AlertCircle className="w-5 h-5 text-brand-accent shrink-0 mt-0.5" />
+          <Sparkles className="w-5 h-5 text-brand-accent shrink-0 mt-0.5" />
           <div className="space-y-1">
             <span className="font-semibold text-white block">
-              Portfolio Integrity Notice
+              Verified Live Production Platform
             </span>
             <p className="text-slate-300 text-xs leading-relaxed">
-              In accordance with our strict verification policy, the projects showcased below represent prototype architectures, open-source reference implementations, and technical proof-of-concepts developed by our founders. Verified client case studies will be updated here as authorized.
+              Featured below is a live, production-grade e-commerce flagship engineered by Govind Web Solutions. Explore the live storefront, inspect the responsive catalog, and review the full technical implementation.
             </p>
           </div>
         </div>
@@ -152,14 +153,27 @@ export default function ProjectsPage() {
                         <Github className="w-4 h-4" />
                       </a>
                     )}
-                    <button
-                      onClick={() => setActiveProjectModal(project)}
-                      className="text-slate-400 hover:text-brand-accent transition-colors p-1"
-                      title="Prototype Details"
-                      aria-label="Prototype Details"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </button>
+                    {project.liveUrl && project.liveUrl !== '#' ? (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-slate-400 hover:text-brand-accent transition-colors p-1"
+                        title="Visit Live Website"
+                        aria-label="Visit Live Website"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    ) : (
+                      <button
+                        onClick={() => setActiveProjectModal(project)}
+                        className="text-slate-400 hover:text-brand-accent transition-colors p-1"
+                        title="Prototype Details"
+                        aria-label="Prototype Details"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -169,18 +183,26 @@ export default function ProjectsPage() {
 
         {/* Empty state if category has no projects */}
         {filteredProjects.length === 0 && (
-          <div className="text-center py-16 p-8 rounded-3xl bg-navy-900 border border-navy-800 max-w-md mx-auto">
-            <Layers className="w-10 h-10 text-slate-500 mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-white mb-1">No Projects in Category</h3>
-            <p className="text-sm text-slate-400 mb-4">
-              We are actively developing and cataloging reference architectures for this category.
+          <div className="text-center py-16 p-8 rounded-3xl bg-navy-900 border border-navy-800 max-w-lg mx-auto shadow-xl">
+            <Layers className="w-10 h-10 text-brand-accent mx-auto mb-3" />
+            <h3 className="text-lg font-bold text-white mb-2">Bespoke Architecture Available</h3>
+            <p className="text-sm text-slate-300 mb-6 leading-relaxed">
+              We design and engineer tailored digital platforms for <span className="text-white font-semibold">{selectedCategory}</span>. Contact Govind Web Solutions to commission a high-converting website for your business.
             </p>
-            <button
-              onClick={() => setSelectedCategory('All')}
-              className="text-xs text-brand-accent font-semibold hover:underline"
-            >
-              Reset to All Projects
-            </button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link
+                to="/contact"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-secondary text-white text-xs font-semibold shadow-md transition-all"
+              >
+                Inquire For This Sector
+              </Link>
+              <button
+                onClick={() => setSelectedCategory('All')}
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-navy-850 hover:bg-navy-800 text-slate-300 hover:text-white text-xs font-medium border border-navy-750 transition-colors"
+              >
+                View All Projects
+              </button>
+            </div>
           </div>
         )}
       </div>
