@@ -658,7 +658,7 @@ export const AGENCY_FOUNDERS = [
       'Clean Code & Component Reusability'
     ],
     socialLinks: {
-      github: 'https://github.com/govindrathod',
+      github: 'https://github.com/Code-With-Govind',
       linkedin: 'https://www.linkedin.com/in/govindrathod',
       email: 'contact@govindwebsolutions.com',
     },
