@@ -420,7 +420,6 @@ export const AGENCY_PROJECTS = [
       'Mobile-first responsive UX with sub-second page rendering'
     ],
     liveUrl: 'https://gt-clothinghub.vercel.app/',
-    githubUrl: 'https://github.com/Code-With-Govind/GTClothinghub.git',
     isSample: false,
     featured: true,
     themeColor: 'from-amber-600 via-stone-800 to-navy-950',
@@ -561,7 +560,7 @@ export const AGENCY_FOUNDERS = [
       'Clean Code & Component Reusability'
     ],
     socialLinks: {
-      github: 'https://github.com/Code-With-Govind',
+      github: null,
       linkedin: 'https://www.linkedin.com/in/govindrathod',
       email: 'contact@govindwebsolutions.com',
     },

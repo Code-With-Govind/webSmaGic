@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ExternalLink,
-  Github,
   Layers,
   ArrowUpRight,
   Filter,
@@ -141,18 +140,6 @@ export default function ProjectsPage() {
                   </button>
 
                   <div className="flex items-center gap-3">
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-slate-400 hover:text-white transition-colors p-1"
-                        title="GitHub Repository"
-                        aria-label="GitHub Repository"
-                      >
-                        <Github className="w-4 h-4" />
-                      </a>
-                    )}
                     {project.liveUrl && project.liveUrl !== '#' ? (
                       <a
                         href={project.liveUrl}
