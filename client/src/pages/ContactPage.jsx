@@ -354,7 +354,7 @@ export default function ContactPage() {
                       value={formData.phone}
                       onChange={handleChange}
                       disabled={isSubmitting}
-                      placeholder="+1 (555) 000-0000"
+                      placeholder="+91 98200 00000"
                       className="w-full px-4 py-3 rounded-xl bg-navy-950 text-white placeholder-slate-500 border border-navy-750 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 focus:outline-none transition-colors disabled:opacity-60"
                     />
                   </div>
